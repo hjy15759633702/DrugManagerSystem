@@ -1,0 +1,12 @@
+body{
+    background: #f3f3f3;
+}
+
+.content{
+    background: #ffffff;
+    width: 1000px;
+    margin: 0 auto;
+    overflow: hidden;
+    padding: 10px;
+}
+
