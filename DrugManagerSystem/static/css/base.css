@@ -2,11 +2,14 @@ body{
     background: #f3f3f3;
 }
 
+.header{
+
+}
+
 .content{
     background: #ffffff;
-    width: 1000px;
+    width: 1024px;
     margin: 0 auto;
     overflow: hidden;
-    padding: 10px;
 }
 

@@ -1,10 +1,22 @@
 .regist_form{
     width: 300px;
     margin: 0 auto;
+    padding: 10px;
 }
 
 .regist_title{
     text-align: center;
 }
+
+.regist_phone_true{
+    font-size: 12px;
+    color: #286090;
+}
+
+.regist_phone_false{
+    font-size: 12px;
+    color: red;
+}
+
 
 

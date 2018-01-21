@@ -4,6 +4,11 @@
 
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static',filename='css/regist.css') }}">
+    <script>
+        function phone_tips() {
+            document.getElementById("regist_phone_tips").innerHTML = "我的第一段 JavaScript";
+        }
+    </script>
 {% endblock %}
 <!--内容-->
 {% block content %}
@@ -11,16 +16,25 @@
         <div class="regist_form">
             <h2 class="regist_title">注册</h2>
             <div class="form-group">
-                <input type="text" class="form-control" placeholder="手机号码">
+                <input type="text" class="form-control" placeholder="手机号码" name="telephone">
+            </div>
+            {% if phoneTips != None %}
+                 {% if phoneTips == True %}
+                    <span class="regist_phone_true">当前手机号码已经被注册</span>
+                 {% else %}
+                    <span class="regist_phone_false">该手机号码允许被注册{{ phoneTips }}</span>
+                 {% endif %}
+            {% else %}
+
+            {% endif %}
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="用户名" name="username">
             </div>
             <div class="form-group">
-                <input type="text" class="form-control" placeholder="用户名">
+                <input type="password" class="form-control" placeholder="密码" name="password">
             </div>
             <div class="form-group">
-                <input type="password" class="form-control" placeholder="密码">
-            </div>
-            <div class="form-group">
-                <input type="password" class="form-control" placeholder="重复密码">
+                <input type="password" class="form-control" placeholder="重复密码" name="password_again">
             </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-primary btn-block">立即注册</button>

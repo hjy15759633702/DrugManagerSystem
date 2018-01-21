@@ -11,7 +11,7 @@ from exts import db
 from main import app
 from models import User
 
-manager = Manager(db)
+manager = Manager(app)
 
 # 使用Migrate绑定app和db
 migrate = Migrate(app,db)
