@@ -17,7 +17,12 @@ db.init_app(app)
 # 首页
 @app.route('/')
 def home():
-    return render_template('home.html')
+    user_id = session.get('user_id')
+    if user_id:
+        user = User.query.filter(User.id == user_id).first()
+        if user:
+            return render_template('home.html')
+    return redirect(url_for('login'))
 
 # 登录
 @app.route('/login/', methods=['POST', 'GET'])
@@ -41,7 +46,7 @@ def login():
 @app.route('/regist/', methods=['POST', 'GET'])
 def regist():
     if request.method == 'GET':
-        return render_template('regist.html', {'phoneTips':False})
+        return render_template('regist.html', phoneTips='0', passwordTips='0')
     else:
         telephone = request.form.get('telephone')
         username = request.form.get('username')
@@ -51,17 +56,21 @@ def regist():
         user = User.query.filter(User.telephone == telephone).first()
 
         if user:
-            print 'phoneTips'
-            return render_template('regist.html',{'phoneTips':True})
-            # return u'该手机号码已经被注册了，请更换手机号码！'
+            return render_template('regist.html', phoneTips='1', passwordTips='0')
         else:
             if password != password_again:
-                return u'两次密码不一致，请重新输入！'
+                return render_template('regist.html', phoneTips='0', passwordTips='1')
             else:
                 user = User(telephone = telephone,username = username,password = password)
                 db.session.add(user)
                 db.session.commit()
                 return redirect(url_for('login'))
+
+# 药品ID	药品编号	药品名称	药品类别	药品描述（作用，药效）	药品图片	药品库存	单价	单位
+# 添加药品
+@app.route('/addDrug/')
+def addDrug():
+    return render_template('addDrug.html')
 
 # 注销
 @app.route('/logout/')

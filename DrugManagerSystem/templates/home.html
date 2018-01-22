@@ -3,6 +3,19 @@
 {% block title %}首页{% endblock %}
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static',filename='css/home.css') }}">
+    <script type="text/javascript">
+        function btn_hover_on() {
+            Document.getElementsByClassName('home_menu_add').style.backgroundColor = '#F9F9F9';
+            Document.getElementsByClassName('home_addText').style.color = '#337AB7';
+        }
+        function btn_hover_out() {
+            Document.getElementsByClassName('home_menu_add').style.backgroundColor = '#337AB7';
+            Document.getElementsByClassName('home_addText').style.color = '#ffffff';
+        }
+        function btn_add() {
+            location.href = "{{ url_for('addDrug') }}";
+        }
+    </script>
 {% endblock %}
 <!--内容-->
 {% block content %}
@@ -42,8 +55,13 @@
                 <p class="home_content_title">药品列表</p>
             </div>
             <div class="home_content_menu">
-                <img class="home_addImg" src="{{ url_for('static',filename='image/add.png') }}">
-                <label class="home_addText">新增</label>
+                <div class="home_menu_add"
+                     onmouseout="btn_hover_out()"
+                     onmouseover="btn_hover_on()"
+                     onclick="btn_add()">
+                    <img class="home_addImg" src="{{ url_for('static',filename='image/add.png') }}">
+                    <label class="home_addText">新增</label>
+                </div>
             </div>
             <div class="home_content_table">
                 <table class="table table-striped table-bordered">

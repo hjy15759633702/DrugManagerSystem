@@ -15,18 +15,12 @@
     <form action="#" method="post">
         <div class="regist_form">
             <h2 class="regist_title">注册</h2>
+            {% if phoneTips == '1' %}
+                <span class="regist_phone_tips">当前手机号码已经被注册</span>
+            {% endif %}
             <div class="form-group">
                 <input type="text" class="form-control" placeholder="手机号码" name="telephone">
             </div>
-            {% if phoneTips != None %}
-                 {% if phoneTips == True %}
-                    <span class="regist_phone_true">当前手机号码已经被注册</span>
-                 {% else %}
-                    <span class="regist_phone_false">该手机号码允许被注册{{ phoneTips }}</span>
-                 {% endif %}
-            {% else %}
-
-            {% endif %}
             <div class="form-group">
                 <input type="text" class="form-control" placeholder="用户名" name="username">
             </div>
@@ -36,6 +30,9 @@
             <div class="form-group">
                 <input type="password" class="form-control" placeholder="重复密码" name="password_again">
             </div>
+            {% if passwordTips == '1' %}
+                <span class="regist_password_tips">两次密码不一致，请重新输入</span>
+            {% endif %}
             <div class="form-group">
                 <button type="submit" class="btn btn-primary btn-block">立即注册</button>
             </div>
