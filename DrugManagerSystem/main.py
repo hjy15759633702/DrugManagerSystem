@@ -33,7 +33,7 @@ def login():
         telephone = request.form.get('telephone')
         password = request.form.get('password')
         checkbox = request.form.get('checkbox')
-        user = User.query.filter(User.telephone == telephone,User.password == password).first()
+        user = User.query.filter(User.telephone == telephone, User.password == password).first()
         if user:
             session['user_id'] = user.id
             # 选中以后31天内不需要登录  cookie保存
@@ -66,7 +66,7 @@ def regist():
                 db.session.commit()
                 return redirect(url_for('login'))
 
-# 药品ID	药品编号	药品名称	药品类别	药品描述（作用，药效）	药品图片	药品库存	单价	单位
+# 药品ID 药品编号	药品名称	药品类别	药品描述（作用，药效）	药品图片	药品库存	单价	单位
 # 添加药品
 @app.route('/addDrug/')
 def addDrug():
