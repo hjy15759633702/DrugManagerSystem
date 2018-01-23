@@ -30,14 +30,13 @@ class Drug(db.Model):
     stockPrice = db.Column(db.REAL(), nullable=True)
     salePice = db.Column(db.REAL(), nullable=True)
     drugTypeId = db.Column(db.Integer(), db.ForeignKey("DrugType.id"))  # 药品关联药品类别表id
-    drugType = db.relationship("DrugType", backref=db.backref("Drug", order_by=id))
+    drugType = db.relationship("DrugType", backref=db.backref("Drugs"))
 
 # 药品类别
 class DrugType(db.Model):
     __tablename__ = 'DrugType'
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     name = db.Column(db.String(50), nullable=False)
-    drugList = db.relationship("Drug", backref=db.backref("DrugType", order_by=id))
 
 # class Host(Base):
 #     __tablename__ = 'host1'
