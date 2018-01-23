@@ -1,5 +1,5 @@
 .addDrug_content{
-
+    padding-bottom: 30px;
 }
 
 .addDrug_title{
@@ -37,7 +37,7 @@
     font-family: 微软雅黑;
     float: left;
     font-weight: bold;
-    text-align: center;
+    text-align: right;
 }
 
 .addDrug_num_text{
@@ -62,7 +62,7 @@
     font-family: 微软雅黑;
     float: left;
     font-weight: bold;
-    text-align: center;
+    text-align: right;
 }
 
 .addDrug_name_text{
@@ -87,7 +87,7 @@
     font-family: 微软雅黑;
     float: left;
     font-weight: bold;
-    text-align: center;
+    text-align: right;
 }
 
 .addDrug_type_text{
@@ -97,10 +97,136 @@
 }
 
 .addDrug_content_secound{
-    margin-top: 10px;
+    margin-top: 15px;
     height: 35px;
     width: 100%;
     display: flex;
     justify-content:center; /*内容水平居中*/
     /*align-items:center; !*内容垂直居中*!*/
+}
+
+.addDrug_count_content{
+    width: 30%;
+    height: 100%;
+    float: left;
+}
+
+.addDrug_count_lable{
+    height: 35px;
+    line-height: 35px;
+    width: 30%;
+    color: #337AB7;
+    font-size: 14px;
+    font-family: 微软雅黑;
+    float: left;
+    font-weight: bold;
+    text-align: right;
+}
+
+.addDrug_count_text{
+    height: 35px;
+    width: 60%;
+    float: left;
+}
+
+.addDrug_count_unit{
+    line-height: 35px;
+    height: 35px;
+    width: 10%;
+    float: right;
+    text-align: center;
+    color: #999999;
+    font-size: 14px;
+    font-family: 微软雅黑;
+}
+
+.addDrug_price_content{
+    margin-left: 15px;
+    width: 30%;
+    height: 100%;
+    float: left;
+}
+
+.addDrug_price_lable{
+    height: 35px;
+    line-height: 35px;
+    width: 30%;
+    color: #337AB7;
+    font-size: 14px;
+    font-family: 微软雅黑;
+    float: left;
+    font-weight: bold;
+    text-align: right;
+}
+
+.addDrug_price_text{
+    height: 35px;
+    width: 60%;
+    float: left;
+}
+
+.addDrug_price_unit{
+    line-height: 35px;
+    height: 35px;
+    width: 10%;
+    float: right;
+    text-align: center;
+    color: #999999;
+    font-size: 14px;
+    font-family: 微软雅黑;
+}
+
+.addDrug_content_third{
+    margin-top: 15px;
+    height: 100px;
+    width: 100%;
+    display: flex;
+    justify-content:center; /*内容水平居中*/
+    /*align-items:center; !*内容垂直居中*!*/
+}
+
+.addDrug_desc_lable{
+    height: 35px;
+    line-height: 35px;
+    width: 15%;
+    color: #337AB7;
+    font-size: 14px;
+    font-family: 微软雅黑;
+    float: left;
+    font-weight: bold;
+    text-align: right;
+}
+
+.addDrug_desc_item{
+    width: 90%;
+    height: 100%;
+}
+
+.addDrug_desc{
+    width: 60%;
+    height: 100%;
+    padding-right: 10px;
+}
+
+.addDrug_desc_textarea{
+    height: 100%;
+    width: 85%;
+    float: right;
+    font-size: 14px;
+    color: #999999;
+    border-color: #CCCCCC;
+}
+
+.addDrug_content_four{
+    margin-top: 30px;
+    height: 35px;
+    width: 100%;
+    display: flex;
+    justify-content:center; /*内容水平居中*/
+    /*align-items:center; !*内容垂直居中*!*/
+}
+
+.addDrug_save_item{
+    height: 35px;
+    width: 200px;
 }

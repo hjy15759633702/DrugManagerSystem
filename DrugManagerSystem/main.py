@@ -66,7 +66,6 @@ def regist():
                 db.session.commit()
                 return redirect(url_for('login'))
 
-# 药品ID 药品编号	药品名称	药品类别	药品描述（作用，药效）	药品图片	药品库存	单价	单位
 # 添加药品
 @app.route('/addDrug/')
 def addDrug():
