@@ -7,7 +7,7 @@
 
 from flask import Flask, render_template, request, url_for, redirect, session
 import config
-from models import User
+from models import User,Drug,DrugType
 from exts import db
 
 app = Flask(__name__)
@@ -67,8 +67,43 @@ def regist():
                 return redirect(url_for('login'))
 
 # 添加药品
-@app.route('/addDrug/')
+@app.route('/addDrug/', methods=['POST', 'GET'])
 def addDrug():
+    if request.method == 'GET':
+        return render_template('addDrug.html')
+    else:
+        typeId = None
+        num = request.form.get('num')
+        name = request.form.get('name')
+        type = request.form.get('type')
+        count = request.form.get('count')
+        price = request.form.get('price')
+        desc = request.form.get('desc')
+
+        # 查找数据库类别表
+        drugType = DrugType.query.filter(DrugType.name == type).first()
+        if drugType:
+            drug = Drug(num=num,name=name,)
+        drug = Drug.query.filter(User.id == user_id).first()
+
+        user = User(telephone=telephone, username=username, password=password)
+        db.session.add(user)
+        db.session.commit()
+
+        id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
+        num = db.Column(db.String(50), nullable=False)
+        name = db.Column(db.String(50), nullable=False)
+        desc = db.Column(db.String(500), nullable=False)
+        isSale = db.Column(db.Boolean(), nullable=False, default=False)
+        stockDate = db.Column(db.Date(), nullable=True)
+        saleDate = db.Column(db.Date(), nullable=True)
+        stockPrice = db.Column(db.REAL(), nullable=True)
+        salePice = db.Column(db.REAL(), nullable=True)
+        # foreignkey药品关联药品类别表id
+        drugTypeId = db.Column(db.Integer(), db.ForeignKey('drugType.id'))
+
+        return redirect(url_for('login'))
+
     return render_template('addDrug.html')
 
 # 注销

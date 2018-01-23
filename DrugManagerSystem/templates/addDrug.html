@@ -4,11 +4,86 @@
 
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static',filename='css/addDrug.css') }}">
+    <script type="application/javascript">
+        function checkData() {
+            {#药品编号#}
+            var num_text = document.getElementById('num_text').value;
+            var name_text = document.getElementById('name_text').value;
+            var type_text = document.getElementById('type_text').value;
+            var count_text = document.getElementById('count_text').value;
+            var price_text = document.getElementById('price_text').value;
+            if (num_text == ''){
+                alert('药品编号不能为空!');
+                return false;
+            }
+            if (name_text == ''){
+                alert('药品名称不能为空!');
+                return false;
+            }
+            if (type_text == ''){
+                alert('药品类别不能为空!');
+                return false;
+            }
+            if (count_text == ''){
+                alert('药品数量不能为空!');
+                return false;
+            }
+            if (!'/^\\+?[1-9][0-9]*$/'.test(count_text)){
+                alert('药品数量格式不合法!');
+                return false;
+            }
+            if (price_text == ''){
+                alert('药品价格不能为空!');
+                return false;
+            }
+            if (!isPriceNumber(price_text)){
+                alert('药品价格格式不合法!');
+                return false;
+            }
+            alert('price_text:'+price_text);
+            return true;
+        }
+        {#只能输入整数#}
+        function NumberCheck(t){
+            var num = t.value;
+            var re=/^\d*$/;
+            if(!re.test(num)){
+                isNaN(parseInt(num))?t.value=1:t.value=parseInt(num);
+            }
+        }
+
+        {#只能输入数字和两位小数的JS#}
+        function isPriceNumber(_keyword){
+            if(_keyword == "0" || _keyword == "0." || _keyword == "0.0" || _keyword == "0.00"){
+                _keyword = "0";
+                return true;
+            }else{
+                var index = _keyword.indexOf("0");
+                var length = _keyword.length;
+                if(index == 0 && length>1){/*0开头的数字串*/
+                    var reg = /^[0]{1}[.]{1}[0-9]{1,2}$/;
+                    if(!reg.test(_keyword)){
+                        return false;
+                    }else{
+                        return true;
+                    }
+                }else{/*非0开头的数字*/
+                    var reg = /^[1-9]{1}[0-9]{0,10}[.]{0,1}[0-9]{0,2}$/;
+                    if(!reg.test(_keyword)){
+                        return false;
+                    }else{
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
+    </script>
 {% endblock %}
 <!--内容-->
 {% block content %}
     <div class="addDrug_content">
-        <form action="#" method="post">
+        <form action="#" method="post" onsubmit="return checkData()">
             <h2 class="addDrug_title">录入药品</h2>
             <!--第一行-->
             <div class="addDrug_content_one">
@@ -18,7 +93,7 @@
                         <label class="addDrug_num_lable">药品编号：</label>
                         <div class="addDrug_num_text">
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="请输入药品编号" name="telephone">
+                                <input id="num_text" type="text" class="form-control" placeholder="请输入药品编号" name="num">
                             </div>
                         </div>
                     </div>
@@ -27,7 +102,7 @@
                         <label class="addDrug_name_lable">药品名称：</label>
                         <div class="addDrug_name_text">
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="请输入药品名称" name="telephone">
+                                <input id="name_text" type="text" class="form-control" placeholder="请输入药品名称" name="name">
                             </div>
                         </div>
                     </div>
@@ -36,7 +111,7 @@
                         <label class="addDrug_type_lable">药品类别：</label>
                         <div class="addDrug_type_text">
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="请输入药品类别" name="telephone">
+                                <input id="type_text" type="text" class="form-control" placeholder="请输入药品类别" name="type">
                             </div>
                         </div>
                     </div>
@@ -50,7 +125,12 @@
                         <label class="addDrug_count_lable">数量：</label>
                         <div class="addDrug_count_text">
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="1" name="telephone">
+                                <input id="count_text" type="number" class="form-control"
+                                       onkeyup="NumberCheck(this)"
+                                       min="1"
+                                       value="1"
+                                       placeholder="请输入药品数量"
+                                       name="count">
                             </div>
                         </div>
                         <label class="addDrug_count_unit">件</label>
@@ -60,7 +140,11 @@
                         <label class="addDrug_price_lable">单价：</label>
                         <div class="addDrug_price_text">
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="1" name="telephone">
+                                <input id="price_text" type="number"
+                                       class="form-control"
+                                       min="0.0" step="1.0"
+                                       value="1"
+                                       placeholder="请输入药品单价" name="price">
                             </div>
                         </div>
                         <label class="addDrug_price_unit">元</label>
@@ -72,10 +156,10 @@
                 <div class="addDrug_desc_item">
                     <div class="addDrug_desc">
                         <label class="addDrug_desc_lable">描述：</label>
-                        <textarea class="addDrug_desc_textarea"
+                        <textarea id="desc_text" class="addDrug_desc_textarea"
                                   onfocus="if(value=='请描述药品...'){value=''}"
                                   onblur="if (value ==''){value='请描述药品...'}"
-                                  rows="10" cols="20">请描述药品...</textarea>
+                                  rows="10" cols="20" name="desc">请描述药品...</textarea>
                     </div>
                 </div>
             </div>
@@ -83,7 +167,7 @@
             <div class="addDrug_content_four">
                 <div class="addDrug_save_item">
                     <div class="form-group">
-                        <button type="submit" class="btn btn-primary btn-block">录&nbsp;&nbsp;入</button>
+                        <button id="submit_btn" type="submit" class="btn btn-primary btn-block">录&nbsp;&nbsp;入</button>
                     </div>
                 </div>
             </div>
