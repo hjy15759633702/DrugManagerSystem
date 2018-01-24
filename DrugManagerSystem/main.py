@@ -9,6 +9,7 @@ from flask import Flask, render_template, request, url_for, redirect, session
 import config
 from models import User,Drug,DrugType
 from exts import db
+import time
 
 app = Flask(__name__)
 app.config.from_object(config)
@@ -17,11 +18,16 @@ db.init_app(app)
 # 首页
 @app.route('/')
 def home():
+    # 判断用户是否登录
     user_id = session.get('user_id')
     if user_id:
         user = User.query.filter(User.id == user_id).first()
         if user:
-            return render_template('home.html')
+            # 获取数据列表
+            drugTypes = DrugType.query.all()
+            # 获取所有药品 前面一百条数据
+            drugs = Drug.query.limit(100).offset(1)
+            return render_template('home.html', drugTypes=drugTypes, drugs=drugs)
     return redirect(url_for('login'))
 
 # 登录
@@ -61,7 +67,7 @@ def regist():
             if password != password_again:
                 return render_template('regist.html', phoneTips='0', passwordTips='1')
             else:
-                user = User(telephone = telephone,username = username,password = password)
+                user = User(telephone=telephone, username=username, password=password)
                 db.session.add(user)
                 db.session.commit()
                 return redirect(url_for('login'))
@@ -72,7 +78,8 @@ def addDrug():
     if request.method == 'GET':
         return render_template('addDrug.html')
     else:
-        typeId = None
+        # 当前时间
+        # nowDate = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         num = request.form.get('num')
         name = request.form.get('name')
         type = request.form.get('type')
@@ -80,31 +87,33 @@ def addDrug():
         price = request.form.get('price')
         desc = request.form.get('desc')
 
+        try:
+            count = int(count)
+        except Exception:
+            raise ValueError('count value is error!')
+
         # 查找数据库类别表
         drugType = DrugType.query.filter(DrugType.name == type).first()
         if drugType:
-            drug = Drug(num=num,name=name,)
-        drug = Drug.query.filter(User.id == user_id).first()
+            drugTypeId = drugType.id
+            for index in range(0,count):
+                drug = Drug(num=num, name=name, desc=desc, stockPrice=price, drugTypeId=drugTypeId)
+                drug.drugType = drugType
+                db.session.add(drug)
+                db.session.flush()  # 主要是这里，写入数据库，但是不提交
+        else:
+            drugType = DrugType(name=type)
+            db.session.add(drugType)
+            db.session.commit()
+            drugTypeId = drugType.id
+            for index in range(0, count):
+                drug = Drug(num=num, name=name, desc=desc, stockPrice=price, drugTypeId=drugTypeId)
+                drug.drugType = drugType
+                db.session.add(drug)
+                db.session.flush()  # 主要是这里，写入数据库，但是不提交
 
-        user = User(telephone=telephone, username=username, password=password)
-        db.session.add(user)
         db.session.commit()
-
-        id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
-        num = db.Column(db.String(50), nullable=False)
-        name = db.Column(db.String(50), nullable=False)
-        desc = db.Column(db.String(500), nullable=False)
-        isSale = db.Column(db.Boolean(), nullable=False, default=False)
-        stockDate = db.Column(db.Date(), nullable=True)
-        saleDate = db.Column(db.Date(), nullable=True)
-        stockPrice = db.Column(db.REAL(), nullable=True)
-        salePice = db.Column(db.REAL(), nullable=True)
-        # foreignkey药品关联药品类别表id
-        drugTypeId = db.Column(db.Integer(), db.ForeignKey('drugType.id'))
-
-        return redirect(url_for('login'))
-
-    return render_template('addDrug.html')
+        return redirect(url_for('home'))
 
 # 注销
 @app.route('/logout/')

@@ -6,7 +6,7 @@
 # 数据模型
 
 from exts import db
-
+from datetime import datetime
 # ID 手机号码 用户名	密码
 # 用户信息
 class User(db.Model):
@@ -25,12 +25,13 @@ class Drug(db.Model):
     name = db.Column(db.String(50), nullable=False)
     desc = db.Column(db.String(500), nullable=False)
     isSale = db.Column(db.Boolean(), nullable=False, default=False)
-    stockDate = db.Column(db.Date(), nullable=True)
-    saleDate = db.Column(db.Date(), nullable=True)
-    stockPrice = db.Column(db.REAL(), nullable=True)
-    salePice = db.Column(db.REAL(), nullable=True)
+    stockDate = db.Column(db.DateTime(), default=datetime.now)
+    saleDate = db.Column(db.DateTime(), nullable=True)
+    stockPrice = db.Column(db.REAL(), nullable=True, default=0)
+    salePice = db.Column(db.REAL(), nullable=True, default=0)
     # foreignkey药品关联药品类别表id
     drugTypeId = db.Column(db.Integer(), db.ForeignKey('drugType.id'))
+    drugType = db.relationship('DrugType', backref='drug')
 
 # 药品类别
 class DrugType(db.Model):
@@ -38,4 +39,4 @@ class DrugType(db.Model):
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     name = db.Column(db.String(50), nullable=False)
     # relationship的作用是将药品和药品类别连接起来
-    drugs = db.relationship('Drug', backref='drugType', lazy='dynamic')
+    # drugs = db.relationship('Drug', backref='drugType', lazy='dynamic')

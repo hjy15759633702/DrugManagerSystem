@@ -74,3 +74,39 @@
     font-family: 微软雅黑;
     color: #ffffff;
 }
+
+.table_title_txt{
+    font-size: 14px;
+    font-weight: bold;
+    color: black;
+}
+
+.home_content_bottom{
+    clear: both;
+    height: 50px;
+    width: 100%;
+    display: flex;
+    justify-content:center; /*内容水平居中*/
+    margin-bottom: 20px;
+}
+
+.home_content_nav{
+    width: 250px;
+    height: 40px;
+}
+
+.home_content_show{
+    padding: 2px 10px 2px 10px;
+    background-color: #337AB7;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+}
+
+.home_content_show:hover{
+    color: #000000;
+    text-decoration: none;
+}
