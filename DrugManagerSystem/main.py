@@ -9,6 +9,7 @@ from flask import Flask, render_template, request, url_for, redirect, session
 import config
 from models import User,Drug,DrugType
 from exts import db
+from sqlalchemy import func
 import time
 
 app = Flask(__name__)
@@ -26,7 +27,8 @@ def home():
             # 获取数据列表
             drugTypes = DrugType.query.all()
             # 获取所有药品 前面一百条数据
-            drugs = Drug.query.limit(100).offset(1)
+            drugs = db.session.query(Drug.num, Drug.name, func.count('*').label('count'))\
+                .group_by(Drug.num).order_by(Drug.id).limit(100).offset(1)
             return render_template('home.html', drugTypes=drugTypes, drugs=drugs)
     return redirect(url_for('login'))
 
@@ -114,6 +116,16 @@ def addDrug():
 
         db.session.commit()
         return redirect(url_for('home'))
+
+# 药品详情
+@app.route('/drugDetail/<drugNum>/', methods=['GET'])
+def drugDetail(drugNum):
+    drugInfo = {}
+    # 查找药品数据库
+    drug = DrugType.query.filter(Drug.num == drugNum).first()
+    if drug:
+
+    return render_template('drugDetail.html')
 
 # 注销
 @app.route('/logout/')

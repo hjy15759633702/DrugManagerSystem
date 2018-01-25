@@ -1,176 +1,110 @@
 {% extends 'base.html' %}
 
-{% block title %}录入药品{% endblock %}
-
+{% block title %}药品详情{% endblock %}
 {% block head %}
-    <link rel="stylesheet" href="{{ url_for('static',filename='css/addDrug.css') }}">
-    <script type="application/javascript">
-        function checkData() {
-            {#药品编号#}
-            var num_text = document.getElementById('num_text').value;
-            var name_text = document.getElementById('name_text').value;
-            var type_text = document.getElementById('type_text').value;
-            var count_text = document.getElementById('count_text').value;
-            var price_text = document.getElementById('price_text').value;
-            if (num_text == ''){
-                alert('药品编号不能为空!');
-                return false;
-            }
-            if (name_text == ''){
-                alert('药品名称不能为空!');
-                return false;
-            }
-            if (type_text == ''){
-                alert('药品类别不能为空!');
-                return false;
-            }
-            if (count_text == ''){
-                alert('药品数量不能为空!');
-                return false;
-            }
-            if (!'/^\\+?[1-9][0-9]*$/'.test(count_text)){
-                alert('药品数量格式不合法!');
-                return false;
-            }
-            if (price_text == ''){
-                alert('药品价格不能为空!');
-                return false;
-            }
-            if (!isPriceNumber(price_text)){
-                alert('药品价格格式不合法!');
-                return false;
-            }
-            return true;
-        }
-        {#只能输入整数#}
-        function NumberCheck(t){
-            var num = t.value;
-            var re=/^\d*$/;
-            if(!re.test(num)){
-                isNaN(parseInt(num))?t.value=1:t.value=parseInt(num);
-            }
-        }
-
-        {#只能输入数字和两位小数的JS#}
-        function isPriceNumber(_keyword){
-            if(_keyword == "0" || _keyword == "0." || _keyword == "0.0" || _keyword == "0.00"){
-                _keyword = "0";
-                return true;
-            }else{
-                var index = _keyword.indexOf("0");
-                var length = _keyword.length;
-                if(index == 0 && length>1){/*0开头的数字串*/
-                    var reg = /^[0]{1}[.]{1}[0-9]{1,2}$/;
-                    if(!reg.test(_keyword)){
-                        return false;
-                    }else{
-                        return true;
-                    }
-                }else{/*非0开头的数字*/
-                    var reg = /^[1-9]{1}[0-9]{0,10}[.]{0,1}[0-9]{0,2}$/;
-                    if(!reg.test(_keyword)){
-                        return false;
-                    }else{
-                        return true;
-                    }
-                }
-                return false;
-            }
-        }
-    </script>
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/drugDetail.css') }}">
 {% endblock %}
 <!--内容-->
 {% block content %}
-    <div class="addDrug_content">
-        <form action="#" method="post" onsubmit="return checkData()">
-            <h2 class="addDrug_title">录入药品</h2>
-            <!--第一行-->
-            <div class="addDrug_content_one">
-                <div class="addDrug_item">
-                    <!--药品编号-->
-                    <div class="addDrug_num_content">
-                        <label class="addDrug_num_lable">药品编号：</label>
-                        <div class="addDrug_num_text">
-                            <div class="form-group">
-                                <input id="num_text" type="text" class="form-control" placeholder="请输入药品编号" name="num">
-                            </div>
-                        </div>
+    <div class="drugDetail_content">
+        <p class="drugDetail_content_title">药品详情</p>
+        <div class="drugDetail_content_one">
+            <div class="drugDetail_content_item">
+                <!--药品编号-->
+                <div class="drugDetail_num_content">
+                    <div class="drugDetail_num">
+                        <label class="drugDetail_num_lable">药品编号：</label>
+                        <label class="drugDetail_num_value">001</label>
                     </div>
-                    <!--药品名称-->
-                    <div class="addDrug_name_content">
-                        <label class="addDrug_name_lable">药品名称：</label>
-                        <div class="addDrug_name_text">
-                            <div class="form-group">
-                                <input id="name_text" type="text" class="form-control" placeholder="请输入药品名称" name="name">
-                            </div>
-                        </div>
+                </div>
+                <!--药品名称-->
+                <div class="drugDetail_name_content">
+                    <div class="drugDetail_name">
+                        <label class="drugDetail_name_lable">药品名称：</label>
+                        <label class="drugDetail_name_value">神马追风膏药</label>
                     </div>
-                    <!--药品类别-->
-                    <div class="addDrug_type_content">
-                        <label class="addDrug_type_lable">药品类别：</label>
-                        <div class="addDrug_type_text">
-                            <div class="form-group">
-                                <input id="type_text" type="text" class="form-control" placeholder="请输入药品类别" name="type">
-                            </div>
+                </div>
+                <!--药品类别-->
+                <div class="drugDetail_type_content">
+                    <div class="drugDetail_type">
+                        <label class="drugDetail_type_lable">药品类别：</label>
+                        <label class="drugDetail_type_value">家庭便药</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="drugDetail_content_secound">
+            <div class="drugDetail_content_item">
+                <!--进货价格-->
+                <div class="drugDetail_stockPrice_content">
+                    <div class="drugDetail_stockPrice">
+                        <label class="drugDetail_stockPrice_lable">进货价格：</label>
+                        <label class="drugDetail_stockPrice_value">25元</label>
+                    </div>
+                </div>
+                <!--进货日期-->
+                <div class="drugDetail_stockDate_content">
+                    <div class="drugDetail_stockDate">
+                        <label class="drugDetail_stockDate_lable">进货日期：</label>
+                        <label class="drugDetail_stockDate_value">2018-01-25 15:23:10</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="drugDetail_content_secound">
+            <div class="drugDetail_content_item">
+                <!--出售价格-->
+                <div class="drugDetail_stockPrice_content">
+                    <div class="drugDetail_stockPrice">
+                        <label class="drugDetail_stockPrice_lable">出售价格：</label>
+                        <label class="drugDetail_salePrice_value">25元</label>
+                    </div>
+                </div>
+                <!--库存-->
+                <div class="drugDetail_name_content">
+                    <div class="drugDetail_name">
+                        <label class="drugDetail_name_lable">库存：</label>
+                        <label class="drugDetail_count_value">15个</label>
+                    </div>
+                </div>
+                <!--出售-->
+                <div class="drugDetail_type_content">
+                    <div class="drugDetail_type">
+                        <label class="drugDetail_type_lable">出售：</label>
+                        <label class="drugDetail_count_value">10个</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="drugDetail_content_four">
+            <div class="drugDetail_content_item">
+                <!--进货价格-->
+                <div class="drugDetail_desc_content">
+                    <div class="drugDetail_desc">
+                        <label class="drugDetail_stockPrice_lable">详情：</label>
+                        <div class="drugDetail_desc_value">
+                            1.忌烟、酒及辛辣、生冷、油腻食物。
+                            2.不宜在服药期间同时服用滋补性中成药。
+                            3.本品含对乙酰氨基酚、马来酸氯苯那敏、咖啡因。服用本品期间不得饮酒或含有酒精的饮料；不能同时服用与本品成份相似的其他抗感冒药；肝、肾功能不全者慎用；膀胱颈梗阻、甲状腺功能亢进、青光眼、高血压和前列腺肥大者慎用；孕妇及哺乳期妇女慎用；服药期间不得驾驶机、车、船、从事高空作业、机械作业及操作精密仪器。
+                            4.脾胃虚寒，症见腹痛、喜暖、泄泻者慎用。
+                            5.糖尿病患者及有心脏病等慢性病严重者应在医师指导下服用。
+                            6.儿童、年老体弱者应在医师指导下服用。
+                            7.服药3天后症状无改善，或症状加重，或出现新的严重症状如胸闷、心悸等应立即停药，并去医院就诊。
+                            8.对本品过敏者禁用，过敏体质者慎用。
+                            9.本品性状发生改变时禁止使用。
+                            10.儿童必须在成人监护下使用。
+                            11.请将本品放在儿童不能接触的地方。
+                            12.如正在使用其他药品，使用本品前请咨询医师或药师。
                         </div>
                     </div>
                 </div>
             </div>
-            <!--第二行-->
-            <div class="addDrug_content_secound">
-                <div class="addDrug_item">
-                    <!--数量-->
-                    <div class="addDrug_count_content">
-                        <label class="addDrug_count_lable">数量：</label>
-                        <div class="addDrug_count_text">
-                            <div class="form-group">
-                                <input id="count_text" type="number" class="form-control"
-                                       onkeyup="NumberCheck(this)"
-                                       min="1"
-                                       value="1"
-                                       placeholder="请输入药品数量"
-                                       name="count">
-                            </div>
-                        </div>
-                        <label class="addDrug_count_unit">件</label>
-                    </div>
-                    <!--单价-->
-                    <div class="addDrug_price_content">
-                        <label class="addDrug_price_lable">单价：</label>
-                        <div class="addDrug_price_text">
-                            <div class="form-group">
-                                <input id="price_text" type="number"
-                                       class="form-control"
-                                       min="0.0" step="1.0"
-                                       value="1"
-                                       placeholder="请输入药品单价" name="price">
-                            </div>
-                        </div>
-                        <label class="addDrug_price_unit">元</label>
-                    </div>
-                </div>
+        </div>
+        <div class="drugDetail_content_five">
+            <div class="drugDetail_btn_item">
+                <a class="drugDetail_btn_update" href="{{ url_for('regist') }}">修改</a>
+                <a class="drugDetail_btn_delete" href="{{ url_for('regist') }}">删除</a>
             </div>
-            <!--第三行-->
-            <div class="addDrug_content_third">
-                <div class="addDrug_desc_item">
-                    <div class="addDrug_desc">
-                        <label class="addDrug_desc_lable">描述：</label>
-                        <textarea id="desc_text" class="addDrug_desc_textarea"
-                                  onfocus="if(value=='请描述药品...'){value=''}"
-                                  onblur="if (value ==''){value='请描述药品...'}"
-                                  rows="10" cols="20" name="desc">请描述药品...</textarea>
-                    </div>
-                </div>
-            </div>
-            <!--第四行-->
-            <div class="addDrug_content_four">
-                <div class="addDrug_save_item">
-                    <div class="form-group">
-                        <button id="submit_btn" type="submit" class="btn btn-primary btn-block">录&nbsp;&nbsp;入</button>
-                    </div>
-                </div>
-            </div>
-        </form>
+        </div>
     </div>
 {% endblock %}
-

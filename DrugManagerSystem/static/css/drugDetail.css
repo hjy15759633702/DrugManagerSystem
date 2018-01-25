@@ -1,0 +1,328 @@
+.drugDetail_content{
+    padding: 10px;
+}
+
+.drugDetail_content_title{
+    width: 100%;
+    height: 100px;
+    line-height: 100px;
+    text-align: center;
+    font-family: Consolas;
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.drugDetail_content_one{
+    width: 100%;
+    height: 30px;
+}
+
+.drugDetail_content_item{
+    width: 80%;
+    height: 100%;
+    margin: 0 auto;
+}
+
+.drugDetail_content_item{
+    width: 80%;
+    height: 100%;
+    margin: 0 auto;
+}
+
+.drugDetail_num_content{
+    width: 33%;
+    height: 100%;
+    float: left;
+}
+
+.drugDetail_name_content{
+    width: 33%;
+    height: 100%;
+    float: left;
+}
+
+.drugDetail_type_content{
+    width: 34%;
+    height: 100%;
+    float: left;
+}
+
+.drugDetail_desc_content{
+    width: 66%;
+    height: 100%;
+    float: left;
+}
+
+.drugDetail_num{
+    height: 100%;
+    width: 60%;
+    margin: 0 auto;
+}
+
+.drugDetail_name{
+    height: 100%;
+    width: 60%;
+    margin: 0 auto;
+}
+
+.drugDetail_type{
+    height: 100%;
+    width: 60%;
+    margin: 0 auto;
+}
+
+.drugDetail_desc{
+    height: 100%;
+    width: 100%;
+    padding-left: 10%;
+}
+
+.drugDetail_num_lable{
+    height: 100%;
+    display: flex;
+    justify-content:center; /*内容水平居中*/
+    align-items:center; /*内容垂直居中*/
+    font-size: 14px;
+    font-weight: bold;
+    color: #337AB7;
+    font-family: Consolas;
+    float: left;
+}
+
+.drugDetail_name_lable{
+    height: 100%;
+    display: flex;
+    justify-content:center; /*内容水平居中*/
+    align-items:center; /*内容垂直居中*/
+    font-size: 14px;
+    font-weight: bold;
+    color: #337AB7;
+    font-family: Consolas;
+    float: left;
+}
+
+.drugDetail_type_lable{
+    height: 100%;
+    display: flex;
+    justify-content:center; /*内容水平居中*/
+    align-items:center; /*内容垂直居中*/
+    font-size: 14px;
+    font-weight: bold;
+    color: #337AB7;
+    font-family: Consolas;
+    float: left;
+}
+
+.drugDetail_num_value{
+    float: left;
+    height: 100%;
+    display: flex;
+    justify-content:center; /*内容水平居中*/
+    align-items:center; /*内容垂直居中*/
+    font-size: 14px;
+    color: #999999;
+    font-family: Consolas;
+}
+
+.drugDetail_name_value{
+    float: left;
+    height: 100%;
+    display: flex;
+    justify-content:center; /*内容水平居中*/
+    align-items:center; /*内容垂直居中*/
+    font-size: 14px;
+    color: #999999;
+    font-family: Consolas;
+}
+
+.drugDetail_type_value{
+    float: left;
+    height: 100%;
+    display: flex;
+    justify-content:center; /*内容水平居中*/
+    align-items:center; /*内容垂直居中*/
+    font-size: 14px;
+    color: #999999;
+    font-family: Consolas;
+}
+
+.drugDetail_content_secound{
+    width: 100%;
+    height: 30px;
+    margin-top: 5px;
+}
+
+.drugDetail_content_four{
+    width: 100%;
+    margin-top: 10px;
+}
+
+.drugDetail_content_five{
+    clear: both;
+    width: 100%;
+    height: 40px;
+}
+
+.drugDetail_stockPrice_content{
+    width: 33%;
+    height: 100%;
+    float: left;
+}
+
+.drugDetail_stockDate_content{
+    width: 64%;
+    height: 100%;
+    float: left;
+}
+
+.drugDetail_stockPrice{
+    height: 100%;
+    width: 60%;
+    margin: 0 auto;
+}
+
+.drugDetail_stockDate{
+    height: 100%;
+    width: 80%;
+    margin: 0 auto;
+}
+
+.drugDetail_stockPrice_lable{
+    height: 100%;
+    display: flex;
+    justify-content:center; /*内容水平居中*/
+    align-items:center; /*内容垂直居中*/
+    font-size: 14px;
+    font-weight: bold;
+    color: #337AB7;
+    font-family: Consolas;
+    float: left;
+}
+
+.drugDetail_desc_value{
+    float: right;
+    height: 100%;
+    display: flex;
+    justify-content:center; /*内容水平居中*/
+    align-items:center; /*内容垂直居中*/
+    font-size: 14px;
+    color: #000000;
+    font-family: Consolas;
+    padding: 5px;
+    border:1px solid #337AB7;
+    border-radius:3px;
+    margin-bottom: 10px;
+}
+
+.drugDetail_stockDate_lable{
+    height: 100%;
+    display: flex;
+    justify-content:center; /*内容水平居中*/
+    align-items:center; /*内容垂直居中*/
+    font-size: 14px;
+    font-weight: bold;
+    color: #337AB7;
+    font-family: Consolas;
+    float: left;
+}
+
+.drugDetail_stockPrice_value{
+    float: left;
+    height: 100%;
+    display: flex;
+    justify-content:center; /*内容水平居中*/
+    align-items:center; /*内容垂直居中*/
+    font-size: 14px;
+    color: #999999;
+    font-family: Consolas;
+}
+
+.drugDetail_salePrice_value{
+    float: left;
+    height: 100%;
+    display: flex;
+    justify-content:center; /*内容水平居中*/
+    align-items:center; /*内容垂直居中*/
+    font-size: 14px;
+    color: #999999;
+    font-family: Consolas;
+}
+
+.drugDetail_stockDate_value{
+    float: left;
+    height: 100%;
+    display: flex;
+    justify-content:center; /*内容水平居中*/
+    align-items:center; /*内容垂直居中*/
+    font-size: 14px;
+    color: #999999;
+    font-family: Consolas;
+}
+
+.drugDetail_count_value{
+    float: left;
+    height: 100%;
+    display: flex;
+    justify-content:center; /*内容水平居中*/
+    align-items:center; /*内容垂直居中*/
+    font-size: 14px;
+    color: orangered;
+    font-family: Consolas;
+}
+
+.drugDetail_btn_item{
+    width: 30%;
+    height: 100%;
+    margin: 0 auto;
+}
+
+.drugDetail_btn_update{
+    width: 40%;
+    height: 100%;
+    display: flex;
+    justify-content:center; /*内容水平居中*/
+    align-items:center; /*内容垂直居中*/
+    background-color: #337AB7;
+    font-size: 16px;
+    color: #ffffff;
+    font-family: Consolas;
+    float: left;
+    text-decoration: none;
+    text-align: center;
+    border-radius:5px;
+}
+
+.drugDetail_btn_update:hover{
+    text-decoration: none;
+    background-color: #F9F9F9;
+    color: #337AB7;
+    font-weight: bold;
+    border:1px solid #337AB7;
+    border-radius:5px;
+}
+
+.drugDetail_btn_delete{
+    width: 40%;
+    height: 100%;
+    display: flex;
+    justify-content:center; /*内容水平居中*/
+    align-items:center; /*内容垂直居中*/
+    background-color: #337AB7;
+    font-size: 16px;
+    color: #ffffff;
+    font-family: Consolas;
+    float: left;
+    text-decoration: none;
+    text-align: center;
+    margin-left: 20%;
+    border-radius:5px;
+}
+
+.drugDetail_btn_delete:hover{
+    text-decoration: none;
+    background-color: #F9F9F9;
+    color: #337AB7;
+    font-weight: bold;
+    border:1px solid #337AB7;
+    border-radius:5px;
+}

@@ -10,7 +10,7 @@ from flask_script import Manager
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate,MigrateCommand
 import config
-from models import User
+from models import User,Drug
 
 app = Flask(__name__)
 app.config.from_object(config)
@@ -26,4 +26,5 @@ def make_shell_context():
 manager.add_command('db', MigrateCommand)
 
 if __name__ == '__main__':
-    manager.run()
+    drugs = Drug.query.limit(100).offset(1)
+    print ('drugs:' + drugs)
