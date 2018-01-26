@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}搜索{% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/searchDrug.css') }}">
+    <script type="text/javascript">
+
+    </script>
+{% endblock %}
+<!--内容-->
+{% block content %}
+    <div class="searchDrug_content">
+        <h2 class="login_title">登录</h2>
+        {% if drugs %}
+            <p>进来!</p>
+            {% for drug in drugs %}
+                {% if drug %}
+                    count = 1
+                    <p>{{ drugs.index(drug)+[1] }}</p>
+                {% else %}
+                    <p>没有查到数据!</p>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <p>没有查到数据!</p>
+        {% endif %}
+    </div>
+{% endblock %}

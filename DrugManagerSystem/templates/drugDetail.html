@@ -14,21 +14,27 @@
                 <div class="drugDetail_num_content">
                     <div class="drugDetail_num">
                         <label class="drugDetail_num_lable">药品编号：</label>
-                        <label class="drugDetail_num_value">001</label>
+                        {% if drug %}
+                            <label class="drugDetail_num_value">{{ drug.num }}</label>
+                        {% endif %}
                     </div>
                 </div>
                 <!--药品名称-->
                 <div class="drugDetail_name_content">
                     <div class="drugDetail_name">
                         <label class="drugDetail_name_lable">药品名称：</label>
-                        <label class="drugDetail_name_value">神马追风膏药</label>
+                        {% if drug %}
+                            <label class="drugDetail_name_value">{{ drug.name }}</label>
+                        {% endif %}
                     </div>
                 </div>
                 <!--药品类别-->
                 <div class="drugDetail_type_content">
                     <div class="drugDetail_type">
                         <label class="drugDetail_type_lable">药品类别：</label>
-                        <label class="drugDetail_type_value">家庭便药</label>
+                        {% if drug %}
+                            <label class="drugDetail_type_value">{{ drug.drugType.name }}</label>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -39,14 +45,18 @@
                 <div class="drugDetail_stockPrice_content">
                     <div class="drugDetail_stockPrice">
                         <label class="drugDetail_stockPrice_lable">进货价格：</label>
-                        <label class="drugDetail_stockPrice_value">25元</label>
+                        {% if drug %}
+                            <label class="drugDetail_stockPrice_value">{{ drug.stockPrice }}元</label>
+                        {% endif %}
                     </div>
                 </div>
                 <!--进货日期-->
                 <div class="drugDetail_stockDate_content">
                     <div class="drugDetail_stockDate">
                         <label class="drugDetail_stockDate_lable">进货日期：</label>
-                        <label class="drugDetail_stockDate_value">2018-01-25 15:23:10</label>
+                        {% if drug %}
+                            <label class="drugDetail_stockDate_value">{{ drug.stockDate }}</label>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -57,46 +67,45 @@
                 <div class="drugDetail_stockPrice_content">
                     <div class="drugDetail_stockPrice">
                         <label class="drugDetail_stockPrice_lable">出售价格：</label>
-                        <label class="drugDetail_salePrice_value">25元</label>
+                        {% if drug %}
+                            <label class="drugDetail_salePrice_value">{{ drug.salePice }}元</label>
+                        {% endif %}
                     </div>
                 </div>
                 <!--库存-->
                 <div class="drugDetail_name_content">
                     <div class="drugDetail_name">
                         <label class="drugDetail_name_lable">库存：</label>
-                        <label class="drugDetail_count_value">15个</label>
+                        {% if stockCount %}
+                            <label class="drugDetail_count_value">{{ stockCount }}个</label>
+                        {% else %}
+                            <label class="drugDetail_count_value">0个</label>
+                        {% endif %}
                     </div>
                 </div>
                 <!--出售-->
                 <div class="drugDetail_type_content">
                     <div class="drugDetail_type">
                         <label class="drugDetail_type_lable">出售：</label>
-                        <label class="drugDetail_count_value">10个</label>
+                        {% if saleCount %}
+                            <label class="drugDetail_count_value">{{ saleCount }}个</label>
+                        {% else %}
+                            <label class="drugDetail_count_value">0个</label>
+                        {% endif %}
                     </div>
                 </div>
             </div>
         </div>
         <div class="drugDetail_content_four">
-            <div class="drugDetail_content_item">
-                <!--进货价格-->
-                <div class="drugDetail_desc_content">
-                    <div class="drugDetail_desc">
-                        <label class="drugDetail_stockPrice_lable">详情：</label>
+            <!--进货价格-->
+            <div class="drugDetail_desc_content">
+                <div class="drugDetail_desc">
+                    <label class="drugDetail_stockPrice_lable">详情：</label>
+                    {% if drug %}
                         <div class="drugDetail_desc_value">
-                            1.忌烟、酒及辛辣、生冷、油腻食物。
-                            2.不宜在服药期间同时服用滋补性中成药。
-                            3.本品含对乙酰氨基酚、马来酸氯苯那敏、咖啡因。服用本品期间不得饮酒或含有酒精的饮料；不能同时服用与本品成份相似的其他抗感冒药；肝、肾功能不全者慎用；膀胱颈梗阻、甲状腺功能亢进、青光眼、高血压和前列腺肥大者慎用；孕妇及哺乳期妇女慎用；服药期间不得驾驶机、车、船、从事高空作业、机械作业及操作精密仪器。
-                            4.脾胃虚寒，症见腹痛、喜暖、泄泻者慎用。
-                            5.糖尿病患者及有心脏病等慢性病严重者应在医师指导下服用。
-                            6.儿童、年老体弱者应在医师指导下服用。
-                            7.服药3天后症状无改善，或症状加重，或出现新的严重症状如胸闷、心悸等应立即停药，并去医院就诊。
-                            8.对本品过敏者禁用，过敏体质者慎用。
-                            9.本品性状发生改变时禁止使用。
-                            10.儿童必须在成人监护下使用。
-                            11.请将本品放在儿童不能接触的地方。
-                            12.如正在使用其他药品，使用本品前请咨询医师或药师。
+                            {{ drug.desc }}
                         </div>
-                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>

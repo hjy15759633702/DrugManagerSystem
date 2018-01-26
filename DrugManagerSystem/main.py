@@ -77,55 +77,93 @@ def regist():
 # 添加药品
 @app.route('/addDrug/', methods=['POST', 'GET'])
 def addDrug():
-    if request.method == 'GET':
-        return render_template('addDrug.html')
-    else:
-        # 当前时间
-        # nowDate = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-        num = request.form.get('num')
-        name = request.form.get('name')
-        type = request.form.get('type')
-        count = request.form.get('count')
-        price = request.form.get('price')
-        desc = request.form.get('desc')
+    # 判断用户是否登录
+    user_id = session.get('user_id')
+    if user_id:
+        user = User.query.filter(User.id == user_id).first()
+        if user:
+            if request.method == 'GET':
+                return render_template('addDrug.html')
+            else:
+                # 当前时间
+                # nowDate = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+                num = request.form.get('num')
+                name = request.form.get('name')
+                type = request.form.get('type')
+                count = request.form.get('count')
+                price = request.form.get('price')
+                desc = request.form.get('desc')
 
-        try:
-            count = int(count)
-        except Exception:
-            raise ValueError('count value is error!')
+                try:
+                    count = int(count)
+                except Exception:
+                    raise ValueError('count value is error!')
 
-        # 查找数据库类别表
-        drugType = DrugType.query.filter(DrugType.name == type).first()
-        if drugType:
-            drugTypeId = drugType.id
-            for index in range(0,count):
-                drug = Drug(num=num, name=name, desc=desc, stockPrice=price, drugTypeId=drugTypeId)
-                drug.drugType = drugType
-                db.session.add(drug)
-                db.session.flush()  # 主要是这里，写入数据库，但是不提交
-        else:
-            drugType = DrugType(name=type)
-            db.session.add(drugType)
-            db.session.commit()
-            drugTypeId = drugType.id
-            for index in range(0, count):
-                drug = Drug(num=num, name=name, desc=desc, stockPrice=price, drugTypeId=drugTypeId)
-                drug.drugType = drugType
-                db.session.add(drug)
-                db.session.flush()  # 主要是这里，写入数据库，但是不提交
+                # 查找数据库类别表
+                drugType = DrugType.query.filter(DrugType.name == type).first()
+                if drugType:
+                    drugTypeId = drugType.id
+                    for index in range(0,count):
+                        drug = Drug(num=num, name=name, desc=desc, stockPrice=price, drugTypeId=drugTypeId)
+                        drug.drugType = drugType
+                        db.session.add(drug)
+                        db.session.flush()  # 主要是这里，写入数据库，但是不提交
+                else:
+                    drugType = DrugType(name=type)
+                    db.session.add(drugType)
+                    db.session.commit()
+                    drugTypeId = drugType.id
+                    for index in range(0, count):
+                        drug = Drug(num=num, name=name, desc=desc, stockPrice=price, drugTypeId=drugTypeId)
+                        drug.drugType = drugType
+                        db.session.add(drug)
+                        db.session.flush()  # 主要是这里，写入数据库，但是不提交
 
-        db.session.commit()
-        return redirect(url_for('home'))
+                db.session.commit()
+                return redirect(url_for('home'))
+    return redirect(url_for('login'))
 
 # 药品详情
 @app.route('/drugDetail/<drugNum>/', methods=['GET'])
 def drugDetail(drugNum):
-    drugInfo = {}
-    # 查找药品数据库
-    drug = DrugType.query.filter(Drug.num == drugNum).first()
-    if drug:
+    # 判断用户是否登录
+    user_id = session.get('user_id')
+    if user_id:
+        user = User.query.filter(User.id == user_id).first()
+        if user:
+            # 查找药品数据库
+            drug = Drug.query.filter(Drug.num == drugNum).first()
+            # 出售
+            saleCount = Drug.query.filter(Drug.isSale == True, Drug.num == drugNum).count()
+            # 库存
+            stockCount = Drug.query.filter(Drug.isSale == False, Drug.num == drugNum).count()
 
-    return render_template('drugDetail.html')
+            return render_template('drugDetail.html', drug=drug, saleCount=saleCount, stockCount=stockCount)
+
+    return redirect(url_for('login'))
+
+# 查找药品
+@app.route('/searchDrug/', methods=['POST'])
+def searchDrug():
+    # 判断用户是否登录
+    user_id = session.get('user_id')
+    if user_id:
+        user = User.query.filter(User.id == user_id).first()
+        if user:
+            # 判断是否是POST
+            if request.method == 'POST':
+                drugs = []
+                keywords = request.form.get('keywords')
+                drugsfromDb = Drug.query.filter(db.or_(Drug.num.like("%"+keywords+"%"),
+                                                     Drug.name.like("%"+keywords+"%"),
+                                                     Drug.desc.like("%" + keywords + "%")))
+                # 从数据库查到列表
+                for drug in drugsfromDb:
+                    drugs.append(drug)
+
+                return render_template('searchDrug.html', drugs=drugs)
+
+    return redirect(url_for('login'))
 
 # 注销
 @app.route('/logout/')
