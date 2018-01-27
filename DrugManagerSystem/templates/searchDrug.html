@@ -10,19 +10,35 @@
 <!--内容-->
 {% block content %}
     <div class="searchDrug_content">
-        <h2 class="login_title">登录</h2>
-        {% if drugs %}
-            <p>进来!</p>
-            {% for drug in drugs %}
-                {% if drug %}
-                    count = 1
-                    <p>{{ drugs.index(drug)+[1] }}</p>
+        <h2 class="searchDrug_title">药品列表</h2>
+        <div class="searchDrug_content_table">
+                {% if drugs %}
+                    <table class="table table-striped table-bordered">
+                        <tr class="table_title">
+                            <td class="table_title_txt">序号</td>
+                            <td class="table_title_txt">药品编号</td>
+                            <td class="table_title_txt">药品名称</td>
+                            <td class="table_title_txt">药品类别</td>
+                            <td class="table_title_txt">操作</td>
+                        </tr>
+                        {% for drug in drugs %}
+                            <tr>
+                                <td>{{ drugs.index(drug) }}</td>
+                                <td>{{ drug.num }}</td>
+                                <td>{{ drug.name }}</td>
+                                <td>{{ drug.drugType.name }}</td>
+                                <td><a href="{{ url_for('drugDetail',drugNum=drug.num) }}" class="home_content_show">查看</a></td>
+                            </tr>
+                        {% endfor %}
                 {% else %}
-                    <p>没有查到数据!</p>
+                    <div class="searchDrug_tips">
+                        <div class="searchDrug_tips_content">
+                            <img class="searchDrug_tips_img" src="{{ url_for('static',filename='image/search.png') }}">
+                            <p class="searchDrug_tips_txt">没有查到数据,换个关键字吧!</p>
+                        </div>
+                    </div>
                 {% endif %}
-            {% endfor %}
-        {% else %}
-            <p>没有查到数据!</p>
-        {% endif %}
+            </table>
+        </div>
     </div>
 {% endblock %}

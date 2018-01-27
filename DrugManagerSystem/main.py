@@ -24,11 +24,18 @@ def home():
     if user_id:
         user = User.query.filter(User.id == user_id).first()
         if user:
+            drugs = []
             # 获取数据列表
             drugTypes = DrugType.query.all()
+
             # 获取所有药品 前面一百条数据
-            drugs = db.session.query(Drug.num, Drug.name, func.count('*').label('count'))\
-                .group_by(Drug.num).order_by(Drug.id).limit(100).offset(1)
+            drugsfromDb = db.session.query(Drug.num, Drug.name, func.count('*').label('count'))\
+                .group_by(Drug.num).order_by(Drug.id).limit(100).offset(0)
+
+            # 从数据库查到列表
+            for drug in drugsfromDb:
+                drugs.append(drug)
+
             return render_template('home.html', drugTypes=drugTypes, drugs=drugs)
     return redirect(url_for('login'))
 
@@ -154,12 +161,16 @@ def searchDrug():
             if request.method == 'POST':
                 drugs = []
                 keywords = request.form.get('keywords')
+
                 drugsfromDb = Drug.query.filter(db.or_(Drug.num.like("%"+keywords+"%"),
                                                      Drug.name.like("%"+keywords+"%"),
-                                                     Drug.desc.like("%" + keywords + "%")))
+                                                     Drug.desc.like("%" + keywords + "%")))\
+                    .group_by(Drug.num).order_by(Drug.id).limit(100).offset(0)
+
                 # 从数据库查到列表
                 for drug in drugsfromDb:
                     drugs.append(drug)
+                    print (drug.drugType.name)
 
                 return render_template('searchDrug.html', drugs=drugs)
 

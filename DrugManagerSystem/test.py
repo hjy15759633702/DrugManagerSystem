@@ -5,26 +5,13 @@
 # @Software  ：PyCharm
 # @Detial    ：测试
 
-from flask import Flask
-from flask_script import Manager
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate,MigrateCommand
-import config
-from models import User,Drug
 
-app = Flask(__name__)
-app.config.from_object(config)
-
-manager = Manager(app)
-db = SQLAlchemy(app)
-migrate = Migrate(app,db)
-
-def make_shell_context():
-    return dict(app=app, db=db, User=User)
-
-# manager.add_command("shell", Shell(make_context=make_shell_context))
-manager.add_command('db', MigrateCommand)
+from datetime import datetime
+import datetime
+import time
 
 if __name__ == '__main__':
-    drugs = Drug.query.limit(100).offset(1)
-    print ('drugs:' + drugs)
+    print (datetime.datetime.now())
+    print (time.time())
+    print (time.localtime())
+    print (time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))

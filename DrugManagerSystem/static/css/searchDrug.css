@@ -1,3 +1,52 @@
 .searchDrug_content{
     padding: 10px;
 }
+
+.searchDrug_title{
+    text-align: center;
+}
+
+.searchDrug_content_table{
+    width: 100%;
+    padding: 10px;
+}
+
+.table_title_txt{
+    font-size: 14px;
+    font-weight: bold;
+    color: black;
+}
+
+.home_content_show:hover{
+    color: #000000;
+    text-decoration: none;
+}
+
+.searchDrug_tips{
+    height: 100px;
+    width: 100%;
+    display: flex;
+    justify-content:center; /*内容水平居中*/
+    align-items:center; /*内容垂直居中*/
+}
+
+.searchDrug_tips_content{
+    width: 250px;
+    height: 30px;
+}
+
+.searchDrug_tips_img{
+    width: 30px;
+    height: 30px;
+    float: left;
+}
+
+.searchDrug_tips_txt{
+    height: 30px;
+    line-height: 30px;
+    float: left;
+    font-size: 14px;
+    color: #999999;
+    font-family: Consolas;
+    margin-left: 5px;
+}
