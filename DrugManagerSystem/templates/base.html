@@ -16,6 +16,14 @@
             crossorigin="anonymous">
     </script>
     <link rel="stylesheet" href="{{ url_for('static',filename='css/base.css') }}">
+    <script type="application/javascript">
+{#        $(function(){#}
+{#           $('.navbar-nav li').click(function(e){#}
+{#               e.preventDefault();#}
+{#               $(this).addClass('active').siblings().removeClass('active');#}
+{#           });#}
+{#        });#}
+    </script>
     <!-- 导入css 或者 js头部 -->
     {% block head %}{% endblock %}
 </head>
@@ -35,9 +43,9 @@
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">首页 <span class="sr-only">(current)</span></a></li>
-                    <li><a href="#">进货库存</a></li>
-                    <li><a href="#">销售</a></li>
+                    <li class="active" ><a href="{{ url_for('home') }}">首页</a></li>
+                    <li ><a href="{{ url_for('addDrug') }}">进货</a></li>
+                    <li ><a href="#">销售</a></li>
                 </ul>
                 <form class="navbar-form navbar-left" action="{{ url_for('searchDrug') }}" method="post">
                     <div class="form-group">

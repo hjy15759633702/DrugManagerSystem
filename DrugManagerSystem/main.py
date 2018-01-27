@@ -170,7 +170,6 @@ def searchDrug():
                 # 从数据库查到列表
                 for drug in drugsfromDb:
                     drugs.append(drug)
-                    print (drug.drugType.name)
 
                 return render_template('searchDrug.html', drugs=drugs)
 
