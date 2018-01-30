@@ -23,6 +23,28 @@
     height: 30px;
 }
 
+.home_nav_add{
+    width: 100%;
+    height: 30px;
+    display: flex;
+    justify-content:center; /*内容水平居中*/
+    background-color: #CCCCCC;
+}
+
+.nav_add_addImg{
+    width: 30px;
+    height: 30px;
+    float: left;
+}
+
+.nav_add_lable{
+    float: left;
+    color: #337AB7;
+    font-size: 14px;
+    line-height: 30px;
+    font-weight: bold;
+}
+
 .home_nav_title p{
     text-align: center;
     color: white;

@@ -17,10 +17,65 @@
         function btn_add() {
             location.href = "{{ url_for('addDrug') }}";
         }
+
+        //弹出隐藏层
+        function ShowDiv(show_div, bg_div) {
+            document.getElementById(show_div).style.display = 'block';
+            document.getElementById(bg_div).style.display = 'block';
+            var bgdiv = document.getElementById(bg_div);
+            bgdiv.style.width = document.body.scrollWidth;
+            // bgdiv.style.height = $(document).height();
+            $("#" + bg_div).height($(document).height());
+        };
+
+        //关闭弹出层
+        function CloseDiv(show_div, bg_div) {
+            document.getElementById(show_div).style.display = 'none';
+            document.getElementById(bg_div).style.display = 'none';
+        };
+
     </script>
+
+    <style>
+        .black_overlay {
+            display: none;
+            position: absolute;
+            top: 0%;
+            left: 0%;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            z-index: 1001;
+            -moz-opacity: 0.8;
+            opacity: .80;
+            filter: alpha(opacity=80);
+        }
+
+        .white_content {
+            display: none;
+            position: absolute;
+            top: 20%;
+            left: 30%;
+            width: 40%;
+            height: 50%;
+            border: 16px solid lightblue;
+            background-color: white;
+            z-index: 1002;
+            overflow: auto;
+        }
+    </style>
 {% endblock %}
 <!--内容-->
 {% block content %}
+    <!--弹出层时背景层DIV-->
+    <div id="fade" class="black_overlay">
+    </div>
+    <div id="MyDiv" class="white_content">
+        <div style="text-align: right; cursor: default; height: 40px;">
+            <span style="font-size: 16px;" onclick="CloseDiv('MyDiv','fade')">关闭</span>
+        </div>
+        目前来说，我还是喜欢这个自己改造的弹出层。自己在项目中也用的是这个。
+    </div>
     <div class="home_content">
         <!--左边-->
         <div class="home_nav">
@@ -34,6 +89,13 @@
                     {% endfor %}
                 </ul>
             </div>
+            <!--ShowDiv('MyDiv','fade')-->
+            <div class="home_nav_add" onclick="{{ url_for('static',filename='image/add_type.png') }}">
+                <div>
+                    <img class="nav_add_addImg" src="{{ url_for('static',filename='image/add_type.png') }}">
+                    <p class="nav_add_lable">添加类别</p>
+                </div>
+            </div>
         </div>
         <!--右边-->
         <div class="home_right">
@@ -45,7 +107,7 @@
                      onmouseout="btn_hover_out()"
                      onmouseover="btn_hover_on()"
                      onclick="btn_add()">
-                    <img class="home_addImg" src="{{ url_for('static',filename='image/add.png') }}">
+                    <img class="home_addImg" src="{{ url_for('drugDetail',drugNum=drug.num) }}">
                     <label class="home_addText">新增</label>
                 </div>
             </div>
