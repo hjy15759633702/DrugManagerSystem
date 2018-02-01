@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}录入药品{% endblock %}
+{% block title %}增加药品{% endblock %}
 
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static',filename='css/addDrug.css') }}">
@@ -83,7 +83,7 @@
 {% block content %}
     <div class="addDrug_content">
         <form action="#" method="post" onsubmit="return checkData()">
-            <h2 class="addDrug_title">录入药品</h2>
+            <h2 class="addDrug_title">增加药品</h2>
             <!--第一行-->
             <div class="addDrug_content_one">
                 <div class="addDrug_item">
@@ -166,7 +166,7 @@
             <div class="addDrug_content_four">
                 <div class="addDrug_save_item">
                     <div class="form-group">
-                        <button id="submit_btn" type="submit" class="btn btn-primary btn-block">录&nbsp;&nbsp;入</button>
+                        <button id="submit_btn" type="submit" class="btn btn-primary btn-block">增&nbsp;&nbsp;&nbsp;&nbsp;加</button>
                     </div>
                 </div>
             </div>

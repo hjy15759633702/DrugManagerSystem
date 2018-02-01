@@ -26,8 +26,8 @@ class Drug(db.Model):
     desc = db.Column(db.String(500), nullable=False)
     isSale = db.Column(db.Boolean(), nullable=False, default=False)
     stockDate = db.Column(db.DateTime(), default=datetime.now)
-    saleDate = db.Column(db.DateTime(), nullable=True)
     stockPrice = db.Column(db.REAL(), nullable=True, default=0)
+    saleDate = db.Column(db.DateTime(), nullable=True)
     salePice = db.Column(db.REAL(), nullable=True, default=0)
     # foreignkey药品关联药品类别表id
     drugTypeId = db.Column(db.Integer(), db.ForeignKey('drugType.id'))
@@ -40,3 +40,9 @@ class DrugType(db.Model):
     name = db.Column(db.String(50), nullable=False)
     # relationship的作用是将药品和药品类别连接起来
     # drugs = db.relationship('Drug', backref='drugType', lazy='dynamic')
+
+    def get_count(self):
+        return self.count
+
+    def set_count(self, count):
+        self.count = count

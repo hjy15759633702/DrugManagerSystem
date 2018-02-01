@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block title %}增加药品类别{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/addDrugType.css') }}">
+    <script type="text/javascript">
+        function sureDelete() {
+            alert('点击')
+        }
+        function checkData() {
+            {#药品编号#}
+            var num_text = document.getElementById('inputText').value;
+            if (num_text == '') {
+                alert('药品类别不能为空!');
+                return false;
+            }
+            return true;
+        }
+    </script>
+{% endblock %}
+<!--内容-->
+{% block content %}
+    <!--弹出层时背景层DIV-->
+    <div id="fade" class="black_overlay">
+    </div>
+    <div id="MyDiv" class="white_content">
+        <div class="MyDiv_top">
+            <img class="MyDiv_img" src="{{ url_for('static',filename='image/close.png') }}"
+                onclick="CloseDiv('MyDiv','fade')">
+        </div>
+        <div class="MyDiv_content">
+            目前来说，我还是喜欢这个自己改造的弹出层。自己在项目中也用的是这个。
+        </div>
+        <div class="MyDiv_buttom">
+            <div class="MyDiv_buttom_right" onclick="sureDelete()">
+                确定
+            </div>
+        </div>
+    </div>
+    <div class="addDrugType_content">
+        <form action="{{ url_for('addDrugType') }}" method="post" onsubmit="return checkData()">
+            <h2 class="addDrugType_title">增加药品类别</h2>
+            {% if drugTypeTips %}
+                <div class="addDrugType_tips">
+                     <label class="addDrugType_tips_txt">{{ drugTypeTips }}</label>
+                </div>
+            {% endif %}
+            <div class="addDrugType_input_item">
+                <label class="addDrugType_input_lable">新增药品类别：</label>
+                <div class="form-group addDrugType_input_input">
+                    <input id="inputText" type="text" class="form-control" placeholder="请输入药品类别" name="drugTypeName">
+                </div>
+                <div class="form-group addDrugType_input_btn">
+                    <button type="submit" class="btn btn-primary btn-block">新&nbsp;&nbsp;&nbsp;&nbsp;增</button>
+                </div>
+            </div>
+            <table class="table table-striped table-bordered">
+                <tr class="table_title">
+                    <td class="table_title_txt">序号</td>
+                    <td class="table_title_txt">药品类别</td>
+                    <td class="table_title_txt">库存(个)</td>
+                    <td class="table_title_txt">操作</td>
+                </tr>
+                {% for drugType in drugTypes %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ drugType.name }}</td>
+                        <td>{{ drugType.count }}</td>
+                        <td><a id="delete"
+                                {# onclick="ShowDiv('MyDiv','fade')"#}
+                               href="{{ url_for('deleteDrugType',drugTypeId=drugType.id) }}"
+                               class="home_content_show">删除</a></td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </form>
+    </div>
+{% endblock %}
+

@@ -1,0 +1,83 @@
+.addStock_content{
+    padding-bottom: 10px;
+}
+
+.addStock_content_left{
+    width: 20%;
+    float: left;
+}
+
+.addStock_content_right{
+    width: 80%;
+    float: right;
+}
+
+.addStock_nav_title{
+    background: #337AB7;
+    width: 100%;
+    height: 30px;
+}
+
+.addStock_nav_title p{
+    text-align: center;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 30px;
+}
+
+.home_nav_type{
+    background: #cccccc;
+    padding: 10px;
+}
+
+.home_nav_add{
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    display: block;
+    background-color: #337AB7;
+    margin-top: 10px;
+    text-align: center;
+    font-weight: bold;
+    color: white;
+    border-radius: 5px;
+}
+
+.home_nav_add_un{
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    display: block;
+    background-color: white;
+    margin-top: 10px;
+    text-align: center;
+    font-weight: bold;
+    color: #337AB7;
+    border-radius: 5px;
+    border: 1px solid #337AB7;
+}
+
+.addStock_item{
+    padding-left: 10px;
+    width: 100%;
+    height: 35px;
+}
+
+.addStock_desc_item{
+    width: 100%;
+    height: 100%;
+    padding-left: 10px;
+}
+
+.addStock_desc{
+    width: 60%;
+    height: 100%;
+}
+
+.addDrug_title{
+    width: 100%;
+    height: 100px;
+    line-height: 100px;
+    text-align: center;
+}

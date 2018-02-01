@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+
+{% block title %}添加进货{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/addStock.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/addDrug.css') }}">
+    <script type="application/javascript">
+        {#只能输入整数#}
+
+        function NumberCheck(t) {
+            var num = t.value;
+            var re = /^\d*$/;
+            if (!re.test(num)) {
+                isNaN(parseInt(num)) ? t.value = 1 : t.value = parseInt(num);
+            }
+        }
+    </script>
+{% endblock %}
+<!--内容-->
+{% block content %}
+    <div class="addStock_content">
+        <form action="#" method="post">
+            <h2 class="addDrug_title">增加药品库存</h2>
+            <!--第一行-->
+            <div class="addDrug_content_one">
+                <div class="addStock_item">
+                    <!--药品编号-->
+                    <div class="addDrug_num_content">
+                        <label class="addDrug_num_lable">药品编号：</label>
+                        <div class="addDrug_num_text">
+                            <div class="form-group">
+                                <input id="num_text"
+                                       type="text"
+                                       readonly='true'
+                                       value="{{ drug.num }}"
+                                       class="form-control"
+                                       name="num">
+                            </div>
+                        </div>
+                    </div>
+                    <!--药品名称-->
+                    <div class="addDrug_name_content">
+                        <label class="addDrug_name_lable">药品名称：</label>
+                        <div class="addDrug_name_text">
+                            <div class="form-group">
+                                <input id="name_text" type="text"
+                                       class="form-control"
+                                       readonly='true'
+                                       value="{{ drug.name }}"
+                                       name="name">
+                            </div>
+                        </div>
+                    </div>
+                    <!--药品类别-->
+                    <div class="addDrug_type_content">
+                        <label class="addDrug_type_lable">药品类别：</label>
+                        <div class="addDrug_type_text">
+                            <div class="form-group">
+                                <input id="type_text"
+                                       type="text"
+                                       class="form-control"
+                                       readonly='true'
+                                       value="{{ drug.drugType.name }}"
+                                       name="type">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--第二行-->
+            <div class="addDrug_content_secound">
+                <div class="addStock_item">
+                    <!--数量-->
+                    <div class="addDrug_count_content">
+                        <label class="addDrug_count_lable">进货数量：</label>
+                        <div class="addDrug_count_text">
+                            <div class="form-group">
+                                <input id="count_text" type="number" class="form-control"
+                                       onkeyup="NumberCheck(this)"
+                                       min="1"
+                                       value="1"
+                                       placeholder="请输入药品数量"
+                                       name="count">
+                            </div>
+                        </div>
+                        <label class="addDrug_count_unit">件</label>
+                    </div>
+                    <!--单价-->
+                    <div class="addDrug_price_content">
+                        <label class="addDrug_price_lable">单价：</label>
+                        <div class="addDrug_price_text">
+                            <div class="form-group">
+                                <input id="price_text" type="number"
+                                       class="form-control"
+                                       min="0.0" step="1.0"
+                                       value="1"
+                                       readonly='true'
+                                       value="{{ drug.stockPrice }}"
+                                       name="price">
+                            </div>
+                        </div>
+                        <label class="addDrug_price_unit">元</label>
+                    </div>
+                </div>
+            </div>
+            <!--第三行-->
+            <div class="addDrug_content_third">
+                <div class="addStock_desc_item">
+                    <div class="addStock_desc">
+                        <label class="addDrug_desc_lable">描述：</label>
+                        <textarea id="desc_text" class="addDrug_desc_textarea"
+                                  readonly='true'
+                                  rows="10" cols="20" name="desc">{{ drug.desc }}</textarea>
+                    </div>
+                </div>
+            </div>
+            <!--第四行-->
+            <div class="addDrug_content_four" style="margin-bottom: 10px">
+                <div class="addDrug_save_item">
+                    <div class="form-group">
+                        <button id="submit_btn" type="submit" class="btn btn-primary btn-block">确定进货</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+

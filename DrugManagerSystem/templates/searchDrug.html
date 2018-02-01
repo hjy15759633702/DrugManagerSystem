@@ -23,7 +23,7 @@
                         </tr>
                         {% for drug in drugs %}
                             <tr>
-                                <td>{{ drugs.index(drug) }}</td>
+                                <td>{{ loop.index }}</td>
                                 <td>{{ drug.num }}</td>
                                 <td>{{ drug.name }}</td>
                                 <td>{{ drug.drugType.name }}</td>
