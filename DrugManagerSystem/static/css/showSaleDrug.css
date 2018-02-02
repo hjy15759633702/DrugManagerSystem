@@ -1,0 +1,112 @@
+.showSaleDrug_content{
+    padding-bottom: 10px;
+}
+
+.showSaleDrug_content_left{
+    width: 20%;
+    float: left;
+}
+
+.showSaleDrug_nav_title{
+    background: #337AB7;
+    width: 100%;
+    height: 30px;
+}
+
+.showSaleDrug_nav_title p{
+    text-align: center;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 30px;
+}
+
+.showSaleDrug_nav_type{
+    background: #cccccc;
+    padding: 10px;
+}
+
+.showSaleDrug_nav_add{
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    display: block;
+    background-color: #337AB7;
+    margin-top: 10px;
+    text-align: center;
+    font-weight: bold;
+    color: white;
+    border-radius: 5px;
+}
+
+.showSaleDrug_nav_add_un{
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    display: block;
+    background-color: white;
+    margin-top: 10px;
+    text-align: center;
+    font-weight: bold;
+    color: #337AB7;
+    border-radius: 5px;
+    border: 1px solid #337AB7;
+}
+
+.showSaleDrug_content_right{
+    width: 80%;
+    float: right;
+}
+
+.showSaleDrug_title{
+    width: 100%;
+    height: 100px;
+    line-height: 100px;
+    text-align: center;
+}
+
+.showSaleDrug_content_table{
+    width: 100%;
+    padding: 10px;
+}
+
+.table_title_txt{
+    font-size: 14px;
+    font-weight: bold;
+    color: black;
+}
+
+.showSaleDrug_content_show{
+    padding: 2px 5px 2px 5px;
+    background-color: #337AB7;
+    font-size: 14px;
+    color: white;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+}
+
+.showSaleDrug_table_menuItem{
+    width: 400px;
+    margin: 0px auto;
+    background-color: chocolate;
+}
+
+.showSaleDrug_table_menu{
+    padding: 2px 5px 2px 5px;
+    background-color: #337AB7;
+    font-size: 14px;
+    color: white;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    margin-left: 10px;
+    float: left;
+}
+
+.showSaleDrug_table_menu{
+    font-size: 14px;
+    font-weight: bold;
+    font-family: Consolas;
+    margin-left: 20px;
+}

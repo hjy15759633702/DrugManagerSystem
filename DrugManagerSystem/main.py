@@ -7,10 +7,10 @@
 
 from flask import Flask, render_template, request, url_for, redirect, session
 import config
-from models import User,Drug,DrugType
+from models import User,Drug,DrugType,Sale
 from exts import db
 from sqlalchemy import func
-import datetime
+import time
 
 app = Flask(__name__)
 app.config.from_object(config)
@@ -359,23 +359,41 @@ def saleDrugHome():
     return redirect(url_for('login'))
 
 # 购买
-@app.route('/saleDrug/', methods=['GET'])
-def saleDrug():
+@app.route('/saleDrug/<drugNum>/', methods=['GET','POST'])
+def saleDrug(drugNum):
     # 判断用户是否登录
     user_id = session.get('user_id')
     if user_id:
         user = User.query.filter(User.id == user_id).first()
         if user:
-            drugs = []
-            # 获取所有药品 前面一百条数据
-            drugsfromDb = db.session.query(Drug.num, Drug.name, func.count('*').label('count')) \
-                .group_by(Drug.num).order_by(Drug.id).all()
+            # 判断是否是POST
+            if request.method == 'GET':
+                count = 0
+                drug = None
+                drugs = Drug.query.filter(Drug.num == drugNum).all()
+                for drugFromDb in drugs:
+                    drug = drugFromDb
+                    count = count + 1
+                return render_template('saleDrug.html', drug=drug, count=count)
+            else:
+                num = request.form.get('num')
+                saleCount = request.form.get('saleCount')
+                # 查找药品
+                drug = Drug.query.filter(Drug.num == num).first()
+                # 查找管理员
+                user = User.query.filter(User.id == session.get('user_id')).first()
 
-            # 从数据库查到列表
-            for drug in drugsfromDb:
-                drugs.append(drug)
+                if drug:
+                    if user:
+                        nowTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+                        sale = Sale(time=nowTime, userId=user.id, drugId=drug.id, saleCount=saleCount)
+                        sale.user = user
+                        sale.drug = drug
+                        db.session.add(sale)
+                        db.session.commit()
 
-            return render_template('saleDrugHome.html', drugs=drugs)
+                return redirect(url_for('showSaleDrug'))
+
     return redirect(url_for('login'))
 
 # 查看选购
@@ -386,16 +404,16 @@ def showSaleDrug():
     if user_id:
         user = User.query.filter(User.id == user_id).first()
         if user:
-            drugs = []
-            # 获取所有药品 前面一百条数据
-            drugsfromDb = db.session.query(Drug.num, Drug.name, func.count('*').label('count')) \
-                .group_by(Drug.num).order_by(Drug.id).all()
-
-            # 从数据库查到列表
-            for drug in drugsfromDb:
-                drugs.append(drug)
-
-            return render_template('saleDrugHome.html', drugs=drugs)
+            showSales = []
+            sales = Sale.query.filter().all()
+            for sale in sales:
+                showSale = {}
+                showSale['name'] = sale.drug.name
+                showSale['stockPrice'] = sale.drug.stockPrice
+                showSale['saleCount'] = sale.saleCount
+                showSale['money'] = sale.saleCount * sale.drug.stockPrice
+                showSales.append(showSale)
+            return render_template('showSaleDrug.html', showSales=showSales)
 
     return redirect(url_for('login'))
 

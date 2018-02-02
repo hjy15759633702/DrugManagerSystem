@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block title %}添加进货{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/saleDrug.css') }}">
+    <script type="application/javascript">
+        {#只能输入整数#}
+        function NumberCheck(t) {
+            var num = t.value;
+            var re = /^\d*$/;
+            if (!re.test(num)) {
+                isNaN(parseInt(num)) ? t.value = 1 : t.value = parseInt(num);
+            }
+        }
+        function check(count) {
+            var saleCount = document.getElementById('saleCount').value;
+            if (saleCount == '') {
+                alert('购买数量不能为空!');
+                return false;
+            }
+            if (saleCount > count) {
+                alert('购买数量不能大于药品库存数量!');
+                return false;
+            }
+            return true;
+        }
+    </script>
+{% endblock %}
+<!--内容-->
+{% block content %}
+    <div class="saleDrug_content">
+        <form action="#" method="post" onsubmit="return check({{ count }})">
+            <div class="saleDrug_item">
+                <h2 class="saleDrug_title">选购药品</h2>
+                <!--药品名称-->
+                <div class="saleDrug_name_content">
+                    <label class="saleDrug_name_lable">药品名称：</label>
+                    <div class="saleDrug_name_text">
+                        <div class="form-group">
+                            <input id="name_text" type="text"
+                                   class="form-control"
+                                   readonly='true'
+                                   value="{{ drug.name }}"
+                                   name="name">
+                        </div>
+                    </div>
+                </div>
+                <!--单价-->
+                <div class="saleDrug_count_content">
+                    <label class="saleDrug_name_lable">药品单价：</label>
+                    <div class="saleDrug_name_text">
+                        <div class="form-group">
+                            <input id="price_text" type="number"
+                                   class="form-control"
+                                   readonly='true'
+                                   value="{{ drug.stockPrice }}"
+                                   name="price">
+                        </div>
+                    </div>
+                </div>
+                <!--库存-->
+                <div class="saleDrug_count_content">
+                    <label class="saleDrug_name_lable">药品库存：</label>
+                    <div class="saleDrug_name_text">
+                        <div class="form-group">
+                            <input id="price_text" type="number"
+                                   class="form-control"
+                                   readonly='true'
+                                   value="{{ count }}"
+                                   name="count">
+                        </div>
+                    </div>
+                </div>
+                <!--数量-->
+                <div class="saleDrug_count_content">
+                    <label class="saleDrug_name_lable">购买数量：</label>
+                    <div class="saleDrug_name_text">
+                        <div class="form-group">
+                            <input id="saleCount" type="number" class="form-control"
+                                   onkeyup="NumberCheck(this)"
+                                   step="1"
+                                   min="1"
+                                   value="1"
+                                   name="saleCount">
+                        </div>
+                    </div>
+                </div>
+                <!--隐藏区域-->
+                <input type="hidden" value="{{ drug.num }}" name="num">
+                <!--提交-->
+                <div class="saleDrug_save_content">
+                    <div class="saleDrug_sale_item">
+                        <div class="form-group">
+                            <button id="submit_btn" type="submit" class="btn btn-primary btn-block">购买</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+

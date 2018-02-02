@@ -11,10 +11,10 @@ from datetime import datetime
 # 用户信息
 class User(db.Model):
     __tablename__ = 'user'
-    id = db.Column(db.Integer,primary_key=True,autoincrement=True)
-    telephone = db.Column(db.String(11),nullable=False)
-    username = db.Column(db.String(50),nullable=False)
-    password = db.Column(db.String(100),nullable=False)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    telephone = db.Column(db.String(11), nullable=False)
+    username = db.Column(db.String(50), nullable=False)
+    password = db.Column(db.String(100), nullable=False)
 
 # 药品ID 药品编号	 药品名称 药品类别Id 药品描述(作用，药效)	单价 是否卖出 进货时间 出售时间
 # 药品信息
@@ -46,3 +46,18 @@ class DrugType(db.Model):
 
     def set_count(self, count):
         self.count = count
+
+# 选购表
+class Sale(db.Model):
+    __tablename__ = 'sale'
+    id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
+    # 选购时间
+    time = db.Column(db.DateTime(), nullable=False, default=datetime.now)
+    # 用户外键
+    userId = db.Column(db.Integer(), db.ForeignKey('user.id'))
+    user = db.relationship('User', backref='sale')
+    # 药品外键
+    drugId = db.Column(db.Integer(), db.ForeignKey('drug.id'))
+    drug = db.relationship('Drug', backref='sale')
+    # 购买数量
+    saleCount = db.Column(db.Integer(), nullable=False)

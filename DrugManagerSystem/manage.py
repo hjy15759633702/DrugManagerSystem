@@ -9,7 +9,7 @@ from flask_script import Manager
 from flask_migrate import Migrate,MigrateCommand
 from exts import db
 from main import app
-from models import User,Drug,DrugType
+from models import User,Drug,DrugType,Sale
 
 manager = Manager(app)
 

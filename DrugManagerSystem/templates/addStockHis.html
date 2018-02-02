@@ -5,6 +5,7 @@
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static',filename='css/addStock.css') }}">
     <link rel="stylesheet" href="{{ url_for('static',filename='css/addStockHis.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/home.css') }}">
     <script type="application/javascript">
         function addStockHistory() {
                 location.href = "{{ url_for('addStocHistory') }}";
@@ -23,8 +24,8 @@
                 <p>菜单</p>
             </div>
             <div class="home_nav_type">
-                <label class="home_nav_add_un" onclick="addStock()">添加进货</label>
-                <label class="home_nav_add" onclick="addStockHistory()">进货历史</label>
+                <label class="addStockHis_nav_add_un" onclick="addStock()">添加进货</label>
+                <label class="addStockHis_nav_add" onclick="addStockHistory()">进货历史</label>
             </div>
         </div>
         <!--右边-->

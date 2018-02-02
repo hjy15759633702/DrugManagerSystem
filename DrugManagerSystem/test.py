@@ -14,4 +14,7 @@ if __name__ == '__main__':
     print (datetime.datetime.now())
     print (time.time())
     print (time.localtime())
+
+    nowDate = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+    print (nowDate)
     print (time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
