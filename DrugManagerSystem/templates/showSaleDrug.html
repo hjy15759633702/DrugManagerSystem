@@ -47,22 +47,23 @@
                             <td>{{ showSale['stockPrice'] }}</td>
                             <td>{{ showSale['saleCount'] }}</td>
                             <td>{{ showSale['money'] }}</td>
-                            {#                            href="{{ url_for('saleDrug',drugNum=drug.num) }}"#}
                             <td>
-                                <a class="showSaleDrug_content_show">删除</a>
+                                <a class="showSaleDrug_content_show" href="{{ url_for('deleteSale',saleId=showSale[]) }}">删除</a>
                             </td>
                         </tr>
                     {% endfor %}
-                    <tr class="table_title">
-                        <td colspan="6" style="width: 100%">
-                            <div class="showSaleDrug_table_menuItem">
-                                <a class="showSaleDrug_table_menu">继续</a>{# showSaleDrug_table_continue#}
-                                <a class="showSaleDrug_table_menu">清除</a>{# showSaleDrug_table_clear#}
-                                <a class="showSaleDrug_table_menu">结账</a>{# showSaleDrug_table_balance#}
-                                <label class="showSaleDrug_table_">总共100元</label>
-                            </div>
-                        </td>
-                    </tr>
+                    {% if showSales %}
+                        <tr class="table_title">
+                            <td colspan="6" style="width: 100%">
+                                <div class="showSaleDrug_table_menuItem">
+                                    <a class="showSaleDrug_table_menu">继续</a>{# showSaleDrug_table_continue#}
+                                    <a class="showSaleDrug_table_menu">清除</a>{# showSaleDrug_table_clear#}
+                                    <a class="showSaleDrug_table_menu">结账</a>{# showSaleDrug_table_balance#}
+                                    <label class="showSaleDrug_table_all">总共:{{ allCount }}元</label>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endif %}
                 </table>
             </div>
         </div>

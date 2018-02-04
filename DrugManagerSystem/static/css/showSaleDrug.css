@@ -89,11 +89,10 @@
 .showSaleDrug_table_menuItem{
     width: 400px;
     margin: 0px auto;
-    background-color: chocolate;
 }
 
 .showSaleDrug_table_menu{
-    padding: 2px 5px 2px 5px;
+    padding: 2px 20px 2px 20px;
     background-color: #337AB7;
     font-size: 14px;
     color: white;
@@ -104,9 +103,9 @@
     float: left;
 }
 
-.showSaleDrug_table_menu{
-    font-size: 14px;
-    font-weight: bold;
-    font-family: Consolas;
-    margin-left: 20px;
+.showSaleDrug_table_all{
+    float: right;
+    display: flex;
+    justify-content:center; /*内容水平居中*/
+    align-items:center; /*内容垂直居中*!*/
 }

@@ -25,6 +25,7 @@ class Drug(db.Model):
     name = db.Column(db.String(50), nullable=False)
     desc = db.Column(db.String(500), nullable=False)
     isSale = db.Column(db.Boolean(), nullable=False, default=False)
+    isChoose = db.Column(db.Boolean(), nullable=False, default=False)
     stockDate = db.Column(db.DateTime(), default=datetime.now)
     stockPrice = db.Column(db.REAL(), nullable=True, default=0)
     saleDate = db.Column(db.DateTime(), nullable=True)
