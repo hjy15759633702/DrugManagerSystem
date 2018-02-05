@@ -38,6 +38,8 @@
                         <td class="table_title_txt">单价(元)</td>
                         <td class="table_title_txt">数量(个)</td>
                         <td class="table_title_txt">金额(元)</td>
+                        <td class="table_title_txt">选购时间</td>
+                        <td class="table_title_txt">选购人</td>
                         <td class="table_title_txt">操作</td>
                     </tr>
                     {% for showSale in showSales %}
@@ -47,18 +49,20 @@
                             <td>{{ showSale['stockPrice'] }}</td>
                             <td>{{ showSale['saleCount'] }}</td>
                             <td>{{ showSale['money'] }}</td>
+                            <td>{{ showSale['time'] }}</td>
+                            <td>{{ showSale['username'] }}</td>
                             <td>
-                                <a class="showSaleDrug_content_show" href="{{ url_for('deleteSale',saleId=showSale[]) }}">删除</a>
+                                <a class="showSaleDrug_content_show" href="{{ url_for('deleteSale',saleId=showSale['id']) }}">删除</a>
                             </td>
                         </tr>
                     {% endfor %}
                     {% if showSales %}
                         <tr class="table_title">
-                            <td colspan="6" style="width: 100%">
+                            <td colspan="8" style="width: 100%">
                                 <div class="showSaleDrug_table_menuItem">
-                                    <a class="showSaleDrug_table_menu">继续</a>{# showSaleDrug_table_continue#}
-                                    <a class="showSaleDrug_table_menu">清除</a>{# showSaleDrug_table_clear#}
-                                    <a class="showSaleDrug_table_menu">结账</a>{# showSaleDrug_table_balance#}
+                                    <a class="showSaleDrug_table_menu" href="{{ url_for('saleDrugHome') }}">继续</a>
+                                    <a class="showSaleDrug_table_menu" href="{{ url_for('clearSale') }}">清除</a>
+                                    <a class="showSaleDrug_table_menu" href="{{ url_for('account') }}">结账</a>
                                     <label class="showSaleDrug_table_all">总共:{{ allCount }}元</label>
                                 </div>
                             </td>

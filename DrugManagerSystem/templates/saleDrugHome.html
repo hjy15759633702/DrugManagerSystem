@@ -43,10 +43,10 @@
                 {% for drug in drugs %}
                     <tr>
                         <td>{{ loop.index }}</td>
-                        <td>{{ drug.num }}</td>
-                        <td>{{ drug.name }}</td>
-                        <td>{{ drug.count }}</td>
-                        <td><a href="{{ url_for('saleDrug',drugNum=drug.num) }}" class="home_content_show">购买</a></td>
+                        <td>{{ drug['num'] }}</td>
+                        <td>{{ drug['name'] }}</td>
+                        <td>{{ drug['count'] }}</td>
+                        <td><a href="{{ url_for('saleDrug',drugNum=drug['num']) }}" class="home_content_show">购买</a></td>
                     </tr>
                 {% endfor %}
             </table>

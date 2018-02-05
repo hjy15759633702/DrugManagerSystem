@@ -25,7 +25,7 @@ class Drug(db.Model):
     name = db.Column(db.String(50), nullable=False)
     desc = db.Column(db.String(500), nullable=False)
     isSale = db.Column(db.Boolean(), nullable=False, default=False)
-    isChoose = db.Column(db.Boolean(), nullable=False, default=False)
+    # isChoose = db.Column(db.Boolean(), nullable=False, default=False)
     stockDate = db.Column(db.DateTime(), default=datetime.now)
     stockPrice = db.Column(db.REAL(), nullable=True, default=0)
     saleDate = db.Column(db.DateTime(), nullable=True)
@@ -58,7 +58,10 @@ class Sale(db.Model):
     userId = db.Column(db.Integer(), db.ForeignKey('user.id'))
     user = db.relationship('User', backref='sale')
     # 药品外键
-    drugId = db.Column(db.Integer(), db.ForeignKey('drug.id'))
-    drug = db.relationship('Drug', backref='sale')
+    # drugId = db.Column(db.Integer(), db.ForeignKey('drug.id'))
+    # 药品编号
+    drugNum = db.Column(db.String(50), nullable=False)
+
+    # drug = db.relationship('Drug', backref='sale')
     # 购买数量
-    saleCount = db.Column(db.Integer(), nullable=False)
+    # saleCount = db.Column(db.Integer(), nullable=False)

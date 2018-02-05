@@ -30,7 +30,7 @@
 <!--内容-->
 {% block content %}
     <div class="saleDrug_content">
-        <form action="#" method="post" onsubmit="return check({{ count }})">
+        <form action="#" method="post" onsubmit="return check({{ drug['count'] }})">
             <div class="saleDrug_item">
                 <h2 class="saleDrug_title">选购药品</h2>
                 <!--药品名称-->
@@ -41,7 +41,7 @@
                             <input id="name_text" type="text"
                                    class="form-control"
                                    readonly='true'
-                                   value="{{ drug.name }}"
+                                   value="{{ drug['name'] }}"
                                    name="name">
                         </div>
                     </div>
@@ -54,7 +54,7 @@
                             <input id="price_text" type="number"
                                    class="form-control"
                                    readonly='true'
-                                   value="{{ drug.stockPrice }}"
+                                   value="{{ drug['stockPrice'] }}"
                                    name="price">
                         </div>
                     </div>
@@ -67,7 +67,7 @@
                             <input id="price_text" type="number"
                                    class="form-control"
                                    readonly='true'
-                                   value="{{ count }}"
+                                   value="{{ drug['count'] }}"
                                    name="count">
                         </div>
                     </div>
@@ -87,7 +87,7 @@
                     </div>
                 </div>
                 <!--隐藏区域-->
-                <input type="hidden" value="{{ drug.num }}" name="num">
+                <input type="hidden" value="{{ drug['num'] }}" name="num">
                 <!--提交-->
                 <div class="saleDrug_save_content">
                     <div class="saleDrug_sale_item">

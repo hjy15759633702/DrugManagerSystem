@@ -347,13 +347,23 @@ def saleDrugHome():
         user = User.query.filter(User.id == user_id).first()
         if user:
             drugs = []
-            # 获取所有药品 前面一百条数据
-            drugsfromDb = db.session.query(Drug.num, Drug.name, func.count('*').label('count')).filter(Drug.isChoose == False).group_by(Drug.num).order_by(Drug.id).all()
+            # 获取所有药品 药品编号进行分组查询  查找每种药品库存多少
+            drugsfromDb = db.session.query(Drug.num, Drug.name, func.count('*').label('count')).group_by(Drug.num).all()
+            # 对购买表 药品编号进行分组查询  查找每种药品选购多少
+            salesfromDb = db.session.query(Sale.drugNum, func.count('*').label('count'))\
+                .filter(Sale.userId == user_id).group_by(Sale.drugNum).all()
 
-            # 从数据库查到列表
-            for drug in drugsfromDb:
+            for d in drugsfromDb:
+                drug = {}
+                count = d.count
+                drug['num'] = d.num
+                drug['name'] = d.name
+                for s in salesfromDb:
+                    if d.num == s.drugNum:
+                        if d.count - s.count >= 0:
+                            count = d.count - s.count
+                drug['count'] = count
                 drugs.append(drug)
-
             return render_template('saleDrugHome.html', drugs=drugs)
     return redirect(url_for('login'))
 
@@ -368,36 +378,31 @@ def saleDrug(drugNum):
             # 判断是否是POST
             if request.method == 'GET':
                 count = 0
-                drug = None
-                drugs = Drug.query.filter(db.and_(Drug.num == drugNum, Drug.isChoose == False)).all()
-                for drugFromDb in drugs:
-                    drug = drugFromDb
-                    count = count + 1
-                return render_template('saleDrug.html', drug=drug, count=count)
+                drug = {}
+                # 查找药品编号  卖出价格 数量
+                drugsfromDb = db.session.query(Drug.num, Drug.name, Drug.stockPrice, func.count('*').label('count')).filter(Drug.num == drugNum).first()
+                salesfromDb = db.session.query(func.count('*').label('count')).filter(db.and_(Sale.drugNum == drugNum, Sale.userId == user_id)).first()
+
+                drug['name'] = drugsfromDb.name
+                drug['num'] = drugsfromDb.num
+                drug['stockPrice'] = drugsfromDb.stockPrice
+
+                if drugsfromDb.count - salesfromDb.count >= 0:
+                    count = drugsfromDb.count - salesfromDb.count
+
+                drug['count'] = count
+
+                return render_template('saleDrug.html', drug=drug)
             else:
                 num = request.form.get('num')
                 saleCount = request.form.get('saleCount')
-                # 查找药品
-                drugs = Drug.query.filter(db.and_(Drug.num == num, Drug.isChoose == False)).all()
-                # 查找管理员
-                user = User.query.filter(User.id == session.get('user_id')).first()
 
-                if len(drugs) > 0:
-                    if user:
-                        # 修改药品表  是否被选择
-                        for index in range(len(drugs)):
-                            if index > int(saleCount)-1:
-                                break
-                            drug = drugs[index]
-                            db.session.query(Drug).filter(Drug.id == drug.id).update({Drug.isChoose: True})
-                            db.session.commit()
-                        nowTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-                        sale = Sale(time=nowTime, userId=user.id, drugId=drugs[0].id, saleCount=saleCount)
-                        sale.user = user
-                        sale.drug = drugs[0]
-                        db.session.add(sale)
-                        db.session.flush()
-                        db.session.commit()
+                for index in range(int(saleCount)):
+                    nowTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+                    sale = Sale(time=nowTime, userId=user.id, drugNum=num)
+                    sale.user = user
+                    db.session.add(sale)
+                    db.session.commit()
 
                 return redirect(url_for('showSaleDrug'))
 
@@ -413,15 +418,19 @@ def showSaleDrug():
         if user:
             showSales = []
             allCount = 0
-            sales = Sale.query.filter().all()
+            sales = db.session.query(Sale.id, Sale.drugNum, Sale.time, Sale.userId, func.count('*').label('count')).filter(Sale.userId == user_id).group_by(Sale.drugNum).all()
             for sale in sales:
+                drug = Drug.query.filter(Drug.num == sale.drugNum).first()
+                user = User.query.filter(User.id == sale.userId).first()
                 showSale = {}
                 showSale['id'] = sale.id
-                showSale['name'] = sale.drug.name
-                showSale['stockPrice'] = sale.drug.stockPrice
-                showSale['saleCount'] = sale.saleCount
-                showSale['money'] = sale.saleCount * sale.drug.stockPrice
-                allCount = allCount + sale.saleCount * sale.drug.stockPrice
+                showSale['name'] = drug.name
+                showSale['stockPrice'] = drug.stockPrice
+                showSale['saleCount'] = sale.count
+                showSale['money'] = sale.count * drug.stockPrice
+                allCount = allCount + sale.count * drug.stockPrice
+                showSale['time'] = sale.time
+                showSale['username'] = user.username
                 showSales.append(showSale)
             return render_template('showSaleDrug.html', showSales=showSales, allCount=allCount)
 
@@ -430,6 +439,44 @@ def showSaleDrug():
 # 删除选购
 @app.route('/deleteSale/<saleId>', methods=['GET'])
 def deleteSale(saleId):
+    # 判断用户是否登录
+    user_id = session.get('user_id')
+    if user_id:
+        user = User.query.filter(User.id == user_id).first()
+        if user:
+            print ('saleId:'+saleId)
+            pass
+    return redirect(url_for('login'))
+
+# 清除选购
+@app.route('/clearSale/', methods=['GET'])
+def clearSale():
+    # 判断用户是否登录
+    user_id = session.get('user_id')
+    if user_id:
+        user = User.query.filter(User.id == user_id).first()
+        if user:
+            sales = Sale.query.all()
+            for sale in sales:
+                db.session.delete(sale)
+            db.session.commit()
+
+            drugs = []
+            # 获取所有药品 前面一百条数据
+            drugsfromDb = db.session.query(Drug.num, Drug.name, func.count('*').label('count')).filter(
+                Drug.isChoose == False).group_by(Drug.num).order_by(Drug.id).all()
+
+            # 从数据库查到列表
+            for drug in drugsfromDb:
+                drugs.append(drug)
+
+            return render_template('saleDrugHome.html', drugs=drugs)
+
+    return redirect(url_for('login'))
+
+# 结账英语
+@app.route('/account/', methods=['GET'])
+def account():
     # 判断用户是否登录
     user_id = session.get('user_id')
     if user_id:
