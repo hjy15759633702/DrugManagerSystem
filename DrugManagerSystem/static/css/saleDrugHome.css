@@ -24,3 +24,23 @@
     border-radius: 5px;
     border: 1px solid #337AB7;
 }
+
+.unSale_btn{
+    padding: 2px 5px 2px 5px;
+    background-color: gray;
+    font-size: 14px;
+    color: white;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+}
+
+.unSale_btn:hover{
+    padding: 2px 5px 2px 5px;
+    background-color: gray;
+    font-size: 14px;
+    color: white;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+}

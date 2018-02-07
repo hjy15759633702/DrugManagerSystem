@@ -21,7 +21,7 @@
         <!--左边-->
         <div class="addStock_content_left">
             <div class="addStock_nav_title">
-                <p>菜单</p>
+                <p>购买管理</p>
             </div>
             <div class="home_nav_type">
                 <label class="saleDrugHome_nav_add" onclick="saleDrug()">选购药品</label>
@@ -37,7 +37,7 @@
                     <td class="table_title_txt">序号</td>
                     <td class="table_title_txt">药品编号</td>
                     <td class="table_title_txt">药品名称</td>
-                    <td class="table_title_txt">库存(个)</td>
+                    <td class="table_title_txt">可选购(个)</td>
                     <td class="table_title_txt">操作</td>
                 </tr>
                 {% for drug in drugs %}
@@ -46,7 +46,11 @@
                         <td>{{ drug['num'] }}</td>
                         <td>{{ drug['name'] }}</td>
                         <td>{{ drug['count'] }}</td>
-                        <td><a href="{{ url_for('saleDrug',drugNum=drug['num']) }}" class="home_content_show">购买</a></td>
+                        {% if drug['count'] <= 0 %}
+                            <td><a href ="javascript:return false;" onclick="return false;" class="unSale_btn">购买</a></td>
+                        {% else %}
+                            <td><a href="{{ url_for('saleDrug',drugNum=drug['num']) }}" class="home_content_show">购买</a></td>
+                        {% endif %}
                     </tr>
                 {% endfor %}
             </table>

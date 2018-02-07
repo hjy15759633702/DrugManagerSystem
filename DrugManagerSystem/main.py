@@ -7,10 +7,12 @@
 
 from flask import Flask, render_template, request, url_for, redirect, session
 import config
-from models import User,Drug,DrugType,Sale
+from models import User,Drug,DrugType,Sale,Account
 from exts import db
 from sqlalchemy import func
+from sqlalchemy import extract
 import time
+import datetime
 
 app = Flask(__name__)
 app.config.from_object(config)
@@ -420,16 +422,17 @@ def showSaleDrug():
             allCount = 0
             sales = db.session.query(Sale.id, Sale.drugNum, Sale.time, Sale.userId, func.count('*').label('count')).filter(Sale.userId == user_id).group_by(Sale.drugNum).all()
             for sale in sales:
+                showSale = {}
                 drug = Drug.query.filter(Drug.num == sale.drugNum).first()
                 user = User.query.filter(User.id == sale.userId).first()
-                showSale = {}
                 showSale['id'] = sale.id
+                showSale['num'] = sale.drugNum
                 showSale['name'] = drug.name
                 showSale['stockPrice'] = drug.stockPrice
                 showSale['saleCount'] = sale.count
                 showSale['money'] = sale.count * drug.stockPrice
                 allCount = allCount + sale.count * drug.stockPrice
-                showSale['time'] = sale.time
+                #showSale['time'] = sale.time
                 showSale['username'] = user.username
                 showSales.append(showSale)
             return render_template('showSaleDrug.html', showSales=showSales, allCount=allCount)
@@ -437,15 +440,19 @@ def showSaleDrug():
     return redirect(url_for('login'))
 
 # 删除选购
-@app.route('/deleteSale/<saleId>', methods=['GET'])
-def deleteSale(saleId):
+@app.route('/deleteSale/<num>', methods=['GET'])
+def deleteSale(num):
     # 判断用户是否登录
     user_id = session.get('user_id')
     if user_id:
         user = User.query.filter(User.id == user_id).first()
         if user:
-            print ('saleId:'+saleId)
-            pass
+            sales = Sale.query.filter(db.and_(Sale.drugNum == num, Sale.userId == user_id)).all()
+            for sale in sales:
+                db.session.delete(sale)
+            db.session.commit()
+            return redirect(url_for('showSaleDrug'))
+
     return redirect(url_for('login'))
 
 # 清除选购
@@ -456,21 +463,13 @@ def clearSale():
     if user_id:
         user = User.query.filter(User.id == user_id).first()
         if user:
-            sales = Sale.query.all()
+            sales = Sale.query.filter(Sale.userId == user_id).all()
             for sale in sales:
                 db.session.delete(sale)
+                db.session.flush()
             db.session.commit()
 
-            drugs = []
-            # 获取所有药品 前面一百条数据
-            drugsfromDb = db.session.query(Drug.num, Drug.name, func.count('*').label('count')).filter(
-                Drug.isChoose == False).group_by(Drug.num).order_by(Drug.id).all()
-
-            # 从数据库查到列表
-            for drug in drugsfromDb:
-                drugs.append(drug)
-
-            return render_template('saleDrugHome.html', drugs=drugs)
+            return redirect(url_for('saleDrugHome'))
 
     return redirect(url_for('login'))
 
@@ -482,7 +481,152 @@ def account():
     if user_id:
         user = User.query.filter(User.id == user_id).first()
         if user:
-            pass
+            nowDate = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+            # 查出当前管理员所有的选购药品进行结账
+            sales = db.session.query(Sale.drugNum, Sale.userId, func.count('*').label('count')).filter(Sale.userId == user_id).group_by(Sale.drugNum).all()
+            for sale in sales:
+                # 结账之前，查询一下库存量是否充足(之间选购已经判断过了)
+                drugs = Drug.query.filter(db.and_(Drug.num == sale.drugNum, Drug.isSale == False)).all()
+                for i in range(len(drugs)):
+                    if i > sale.count-1:
+                        break
+                    drug = drugs[i]
+                    Drug.query.filter(Drug.id == drug.id).update({Drug.isSale: True, Drug.saleDate: nowDate})
+                    account = Account(drugId=drug.id, userId=user_id, drugNum=drug.num, time=nowDate)
+                    db.session.add(account)
+                    db.session.commit()
+
+                # 删除选购表数据
+                salesFromDb = Sale.query.filter(db.and_(Sale.drugNum == sale.drugNum, Sale.userId == user_id)).all()
+                for i in range(len(salesFromDb)):
+                    db.session.delete(salesFromDb[i])
+                    db.session.flush()
+
+                db.session.commit()
+
+            return redirect(url_for('saleManageHome'))
+
+    return redirect(url_for('login'))
+
+# 销售管理首页
+@app.route('/saleManageHome/', methods=['GET'])
+def saleManageHome():
+    # 判断用户是否登录
+    user_id = session.get('user_id')
+    if user_id:
+        user = User.query.filter(User.id == user_id).first()
+        if user:
+            acs = db.session.query(Account.drugId, Account.userId, Account.time, func.count('*').label('count')).group_by(Account.time, Account.drugNum).all()
+            accounts = []
+            for a in acs:
+                account = {}
+                drug = Drug.query.filter(Drug.id == a.drugId).first()
+                user = User.query.filter(User.id == a.userId).first()
+                account['name'] = drug.name
+                account['stockPrice'] = drug.stockPrice
+                account['count'] = a.count
+                account['time'] = a.time
+                account['money'] = a.count * drug.stockPrice
+                account['username'] = user.username
+                accounts.append(account)
+
+            return render_template('saleManageHome.html', accounts=accounts)
+    return redirect(url_for('login'))
+
+# 今日明细
+@app.route('/saleOnToday/', methods=['GET'])
+def saleOnToday():
+    # 判断用户是否登录
+    user_id = session.get('user_id')
+    if user_id:
+        user = User.query.filter(User.id == user_id).first()
+        if user:
+            cur = datetime.datetime.now()
+            acs = db.session.query(Account.drugId, Account.userId, Account.time, func.count('*').label('count'))\
+                .filter(db.and_(extract('year', Account.time) == cur.year, extract('month', Account.time) == cur.month, extract('day', Account.time) == cur.day))\
+                .group_by(Account.time, Account.drugNum).all()
+            accounts = []
+            for a in acs:
+                account = {}
+                drug = Drug.query.filter(Drug.id == a.drugId).first()
+                user = User.query.filter(User.id == a.userId).first()
+                account['name'] = drug.name
+                account['stockPrice'] = drug.stockPrice
+                account['count'] = a.count
+                account['time'] = a.time
+                account['money'] = a.count * drug.stockPrice
+                account['username'] = user.username
+                accounts.append(account)
+            return render_template('saleOnToday.html', accounts=accounts)
+    return redirect(url_for('login'))
+
+# 日期查询
+@app.route('/saleSearchByDay/', methods=['GET','POST'])
+def saleSearchByDay():
+    # 判断用户是否登录
+    user_id = session.get('user_id')
+    if user_id:
+        user = User.query.filter(User.id == user_id).first()
+        if user:
+            if request.method == 'GET':
+                # 查询今日的明细
+                cur = datetime.datetime.now()
+                acs = db.session.query(Account.drugId, Account.userId, Account.time, func.count('*').label('count')) \
+                    .filter(
+                    db.and_(extract('year', Account.time) == cur.year, extract('month', Account.time) == cur.month,
+                            extract('day', Account.time) == cur.day)) \
+                    .group_by(Account.time, Account.drugNum).all()
+                accounts = []
+                for a in acs:
+                    account = {}
+                    drug = Drug.query.filter(Drug.id == a.drugId).first()
+                    user = User.query.filter(User.id == a.userId).first()
+                    account['name'] = drug.name
+                    account['stockPrice'] = drug.stockPrice
+                    account['count'] = a.count
+                    account['time'] = a.time
+                    account['money'] = a.count * drug.stockPrice
+                    account['username'] = user.username
+                    accounts.append(account)
+                return render_template('saleSearchByDay.html', accounts=accounts, startTime=cur.strftime("%Y-%m-%d"), endTime=cur.strftime("%Y-%m-%d"))
+            else:
+                startTime = request.form.get('startTime')
+                endTime = request.form.get('endTime')
+                # 时间转换
+                st = time.strptime(startTime, "%Y-%m-%d")
+                et = time.strptime(endTime, "%Y-%m-%d")
+                sy, sm, sd = st[0:3]
+                ey, em, ed = et[0:3]
+                # 查询今日的明细
+                cur = datetime.datetime.now()
+                acs = db.session.query(Account.drugId, Account.userId, Account.time, func.count('*').label('count')) \
+                    .filter(Account.time.between(startTime,endTime))\
+                    .group_by(Account.time, Account.drugNum).all()
+                accounts = []
+                for a in acs:
+                    account = {}
+                    drug = Drug.query.filter(Drug.id == a.drugId).first()
+                    user = User.query.filter(User.id == a.userId).first()
+                    account['name'] = drug.name
+                    account['stockPrice'] = drug.stockPrice
+                    account['count'] = a.count
+                    account['time'] = a.time
+                    account['money'] = a.count * drug.stockPrice
+                    account['username'] = user.username
+                    accounts.append(account)
+                return render_template('saleSearchByDay.html', accounts=accounts)
+    return redirect(url_for('login'))
+
+# 销售排行
+@app.route('/saleOrder/', methods=['GET'])
+def saleOrder():
+    # 判断用户是否登录
+    user_id = session.get('user_id')
+    if user_id:
+        user = User.query.filter(User.id == user_id).first()
+        if user:
+            return render_template('saleOrder.html')
+
     return redirect(url_for('login'))
 
 # 注销

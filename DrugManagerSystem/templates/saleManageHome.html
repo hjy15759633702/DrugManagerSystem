@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block title %}销售管理{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/saleManageHome.css') }}">
+    <script type="application/javascript">
+        function saleManageHome() {
+                location.href = "{{ url_for('saleManageHome') }}";
+        }
+        function saleOnToday() {
+                location.href = "{{ url_for('saleOnToday') }}";
+        }
+        function saleSearchByDay() {
+                location.href = "{{ url_for('saleSearchByDay') }}";
+        }
+        function saleOrder() {
+                location.href = "{{ url_for('saleOrder') }}";
+        }
+
+        saleSearchByDay
+    </script>
+{% endblock %}
+<!--内容-->
+{% block content %}
+    <div class="saleManageHome_content">
+        <!--左边-->
+        <div class="saleManageHome_content_left">
+            <div class="saleManageHome_nav_title">
+                <p>销售管理</p>
+            </div>
+            <div class="saleManageHome_nav_type">
+                <label class="saleManageHome_nav_add" onclick="saleManageHome()">查看明细</label>
+                <label class="saleManageHome_nav_add_un" onclick="saleOnToday()">今日明细</label>
+                <label class="saleManageHome_nav_add_un" onclick="saleSearchByDay()">日期查询</label>
+                <label class="saleManageHome_nav_add_un" onclick="saleOrder()">销售排行</label>
+            </div>
+        </div>
+        <!--右边-->
+        <div class="saleManageHome_content_right">
+            <h2 class="saleManageHome_title">销售药品列表</h2>
+            <div class="saleManageHome_content_table">
+                <table class="table table-striped table-bordered">
+                <tr class="table_title">
+                    <td class="table_title_txt">序号</td>
+                    <td class="table_title_txt">药品名称</td>
+                    <td class="table_title_txt">单价</td>
+                    <td class="table_title_txt">数量(个)</td>
+                    <td class="table_title_txt">金额</td>
+                    <td class="table_title_txt">销售时间</td>
+                    <td class="table_title_txt">操作员</td>
+                </tr>
+                {% for account in accounts %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ account['name'] }}</td>
+                        <td>{{ account['stockPrice'] }}</td>
+                        <td>{{ account['count'] }}</td>
+                        <td>{{ account['money'] }}</td>
+                        <td>{{ account['time'] }}</td>
+                        <td>{{ account['username'] }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

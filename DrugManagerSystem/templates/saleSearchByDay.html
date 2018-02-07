@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+
+{% block title %}销售管理{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/saleManageHome.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/saleSearchByDay.css') }}">
+    {#时间控件#}
+    {#    <link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"#}
+    {#          rel="stylesheet">#}
+    {#    <script src="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>#}
+    <link rel="stylesheet" type="text/css" href="/static/css/com/bootstrap-datetimepicker.min.css">
+    <script type="text/javascript" src="/static/js/bootstrap-datetimepicker.fr.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script type="application/javascript">
+        function saleManageHome() {
+            location.href = "{{ url_for('saleManageHome') }}";
+        }
+
+        function saleOnToday() {
+            location.href = "{{ url_for('saleOnToday') }}";
+        }
+
+        function saleSearchByDay() {
+            location.href = "{{ url_for('saleSearchByDay') }}";
+        }
+
+        function saleOrder() {
+            location.href = "{{ url_for('saleOrder') }}";
+        }
+
+        {#获取当前时间年月日#}
+        function getNowFormatDate() {
+            var date = new Date();
+            var seperator1 = "-";
+            var year = date.getFullYear();
+            var month = date.getMonth() + 1;
+            var strDate = date.getDate();
+            if (month >= 1 && month <= 9) {
+                month = "0" + month;
+            }
+            if (strDate >= 0 && strDate <= 9) {
+                strDate = "0" + strDate;
+            }
+            var currentdate = year + seperator1 + month + seperator1 + strDate;
+            return currentdate;
+        }
+
+        {#进去页面加载此方法#}
+{#        window.onload = function () {#}
+{#            var startTime = document.getElementById('startTime');#}
+{#            var endTime = document.getElementById('endTime');#}
+{#            startTime.value = getNowFormatDate();#}
+{#            endTime.value = getNowFormatDate();#}
+{#        }#}
+        //日期插件
+        $('.form_datetime').datetimepicker({
+            //language:  'fr',
+            weekStart: 1,
+            todayBtn: 1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            forceParse: 0,
+            showMeridian: 1
+        });
+    </script>
+{% endblock %}
+<!--内容-->
+{% block content %}
+    <div class="saleManageHome_content">
+        <!--左边-->
+        <div class="saleManageHome_content_left">
+            <div class="saleManageHome_nav_title">
+                <p>销售管理</p>
+            </div>
+            <div class="saleManageHome_nav_type">
+                <label class="saleManageHome_nav_add_un" onclick="saleManageHome()">查看明细</label>
+                <label class="saleManageHome_nav_add_un" onclick="saleOnToday()">今日明细</label>
+                <label class="saleManageHome_nav_add" onclick="saleSearchByDay()">日期查询</label>
+                <label class="saleManageHome_nav_add_un" onclick="saleOrder()">销售排行</label>
+            </div>
+        </div>
+        <!--右边-->
+        <div class="saleManageHome_content_right">
+            <form action="#" method="post">
+                <h2 class="saleManageHome_title">销售药品列表</h2>
+                <div class="saleSearchByDay_search_item">
+                    <label class="saleSearchByDay_search_lable">开始时间：</label>
+                    <div class="saleSearchByDay_search_inputItem">
+                        <div class="saleSearchByDay_search_input">
+                            <input id="startTime" type="text" class="form-control saleSearchByDay_input"
+                                   value="{{ startTime }}"
+                                   name="startTime">
+                        </div>
+                        <img id="startTime" class="saleSearchByDay_imgStartTime"
+                             src="{{ url_for('static',filename='image/time.png') }}">
+                    </div>
+                    <label class="saleSearchByDay_search_lable" style="margin-left: 20px">结束时间：</label>
+                    <div class="saleSearchByDay_search_inputItem">
+                        <div class="saleSearchByDay_search_input">
+                            <input id="endTime" type="text" class="form-control saleSearchByDay_input"
+                                   value="{{ endTime }}"
+                                   name="endTime">
+                        </div>
+                        <img class="saleSearchByDay_imgStartTime"
+                             src="{{ url_for('static',filename='image/time.png') }}">
+                    </div>
+                    <div class="form-group saleSearchByDay_search_btn">
+                        <button type="submit" class="btn btn-primary btn-block">查&nbsp;&nbsp;&nbsp;&nbsp;询</button>
+                    </div>
+                </div>
+                <div class="saleManageHome_content_table">
+                    <table class="table table-striped table-bordered">
+                        <tr class="table_title">
+                            <td class="table_title_txt">序号</td>
+                            <td class="table_title_txt">药品编号</td>
+                            <td class="table_title_txt">单价</td>
+                            <td class="table_title_txt">数量(个)</td>
+                            <td class="table_title_txt">金额</td>
+                            <td class="table_title_txt">销售时间</td>
+                            <td class="table_title_txt">操作员</td>
+                        </tr>
+                        {% for account in accounts %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>{{ account['name'] }}</td>
+                                <td>{{ account['stockPrice'] }}</td>
+                                <td>{{ account['count'] }}</td>
+                                <td>{{ account['money'] }}</td>
+                                <td>{{ account['time'] }}</td>
+                                <td>{{ account['username'] }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+

@@ -65,3 +65,20 @@ class Sale(db.Model):
     # drug = db.relationship('Drug', backref='sale')
     # 购买数量
     # saleCount = db.Column(db.Integer(), nullable=False)
+
+# 账户表
+class Account(db.Model):
+    __tablename__ = 'account'
+    id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
+    # 结账流水号 后期银行对接  可以用上 先架构着  默认是8个0
+    accountNo = db.Column(db.String(50), nullable=False, default='00000000')
+    # 结账时间
+    time = db.Column(db.DateTime(), nullable=False, default=datetime.now)
+    # 用户外键
+    userId = db.Column(db.Integer(), db.ForeignKey('user.id'))
+    user = db.relationship('User', backref='account')
+    # 药品外键
+    drugId = db.Column(db.Integer(), db.ForeignKey('drug.id'))
+    drugNum = db.Column(db.String(50), nullable=False)
+    # 药品编号
+    drug = db.relationship('Drug', backref='account')
