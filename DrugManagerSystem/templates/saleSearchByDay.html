@@ -122,6 +122,7 @@
                             <td class="table_title_txt">销售时间</td>
                             <td class="table_title_txt">操作员</td>
                         </tr>
+                    {% if accounts %}
                         {% for account in accounts %}
                             <tr>
                                 <td>{{ loop.index }}</td>
@@ -133,6 +134,11 @@
                                 <td>{{ account['username'] }}</td>
                             </tr>
                         {% endfor %}
+                    {% else %}
+                        <tr class="noDataTr">
+                            <td colspan="7" class="noDataTd">当前列表数据为空...</td>
+                        </tr>
+                    {% endif %}
                     </table>
                 </div>
             </form>

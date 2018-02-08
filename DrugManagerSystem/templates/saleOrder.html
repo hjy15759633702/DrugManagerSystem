@@ -6,16 +6,19 @@
     <link rel="stylesheet" href="{{ url_for('static',filename='css/saleManageHome.css') }}">
     <script type="application/javascript">
         function saleManageHome() {
-                location.href = "{{ url_for('saleManageHome') }}";
+            location.href = "{{ url_for('saleManageHome') }}";
         }
+
         function saleOnToday() {
-                location.href = "{{ url_for('saleOnToday') }}";
+            location.href = "{{ url_for('saleOnToday') }}";
         }
+
         function saleSearchByDay() {
-                location.href = "{{ url_for('saleSearchByDay') }}";
+            location.href = "{{ url_for('saleSearchByDay') }}";
         }
+
         function saleOrder() {
-                location.href = "{{ url_for('saleOrder') }}";
+            location.href = "{{ url_for('saleOrder') }}";
         }
 
         saleSearchByDay
@@ -41,29 +44,37 @@
             <h2 class="saleManageHome_title">销售药品列表</h2>
             <div class="saleManageHome_content_table">
                 <table class="table table-striped table-bordered">
-                <tr class="table_title">
-                    <td class="table_title_txt">序号</td>
-                    <td class="table_title_txt">药品编号</td>
-                    <td class="table_title_txt">单价</td>
-                    <td class="table_title_txt">数量(个)</td>
-                    <td class="table_title_txt">金额</td>
-                    <td class="table_title_txt">销售时间</td>
-                    <td class="table_title_txt">操作员</td>
-                </tr>
-{#                {% for drug in drugs %}#}
-{#                    <tr>#}
-{#                        <td>{{ loop.index }}</td>#}
-{#                        <td>{{ drug['num'] }}</td>#}
-{#                        <td>{{ drug['name'] }}</td>#}
-{#                        <td>{{ drug['count'] }}</td>#}
-{#                        {% if drug['count'] <= 0 %}#}
-{#                            <td><a href ="javascript:return false;" onclick="return false;" class="unSale_btn">购买</a></td>#}
-{#                        {% else %}#}
-{#                            <td><a href="{{ url_for('saleDrug',drugNum=drug['num']) }}" class="home_content_show">购买</a></td>#}
-{#                        {% endif %}#}
-{#                    </tr>#}
-{#                {% endfor %}#}
-            </table>
+                    <tr class="table_title">
+                        <td class="table_title_txt">序号</td>
+                        <td class="table_title_txt">药品编号</td>
+                        <td class="table_title_txt">单价</td>
+                        <td class="table_title_txt">数量(个)</td>
+                        <td class="table_title_txt">金额</td>
+                        <td class="table_title_txt">销售时间</td>
+                        <td class="table_title_txt">操作员</td>
+                    </tr>
+                    {% if accounts %}
+                        {% for account in accounts %}
+                            <tr>
+                                {% if loop.index > 3 %}
+                                    <td>{{ loop.index }}</td>
+                                {% else %}
+                                    <td style="color: red; font-size: 16px; font-weight: bold">{{ loop.index }}</td>
+                                {% endif %}
+                                <td>{{ account['name'] }}</td>
+                                <td>{{ account['stockPrice'] }}</td>
+                                <td>{{ account['count'] }}</td>
+                                <td>{{ account['money'] }}</td>
+                                <td>{{ account['time'] }}</td>
+                                <td>{{ account['username'] }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr class="noDataTr">
+                            <td colspan="7" class="noDataTd">当前列表数据为空...</td>
+                        </tr>
+                    {% endif %}
+                </table>
             </div>
         </div>
     </div>
