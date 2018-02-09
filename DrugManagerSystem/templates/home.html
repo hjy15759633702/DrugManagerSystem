@@ -32,11 +32,19 @@
                 <p>药品类别</p>
             </div>
             <div class="home_nav_type">
-                <ul class="nav nav-pills nav-stacked">
-                    {% for drugType in drugTypes %}
-                        <li role="presentation" class="active"><a href="#">{{ drugType.name }}</a></li>
-                    {% endfor %}
-                </ul>
+                {% for drugType in drugTypes %}
+                    {% if drugTypeId %}
+                        {% if drugTypeId == drugType.id %}
+                            <label class="home_nav_addType" onclick="location.href = '{{ url_for('drugType', drugTypeId=drugType.id) }}'">{{ drugType.name }}</label>
+                        {% else %}
+                            <label class="home_nav_addType_un" onclick="location.href = '{{ url_for('drugType', drugTypeId=drugType.id) }}'">{{ drugType.name }}</label>
+                        {% endif %}
+                    {% else %}
+                        <label class="home_nav_addType_un" onclick="location.href = '{{ url_for('drugType', drugTypeId=drugType.id) }}'">
+                            {{ drugType.name }}
+                        </label>
+                    {% endif %}
+                {% endfor %}
             </div>
             <!--ShowDiv('MyDiv','fade')-->
             <div class="home_nav_add" onclick="btn_addType()">
@@ -69,46 +77,46 @@
                         <td class="table_title_txt">库存(个)</td>
                         <td class="table_title_txt">操作</td>
                     </tr>
-                    {% for drug in drugs %}
-                        <tr>
-                            <td>{{ loop.index }}</td>
-                            <td>{{ drug.num }}</td>
-                            <td>{{ drug.name }}</td>
-{#                            <td>{{ drug.stockPrice }}</td>#}
-{#                            <td>{{ drug.stockDate }}</td>#}
-{#                            {% if drug.isSale == True %}#}
-{#                                <td>卖出</td>#}
-{#                            {% else %}#}
-{#                                <td>有货</td>#}
-{#                            {% endif %}#}
-                            <td>{{ drug.count }}</td>
-                            <td><a href="{{ url_for('drugDetail',drugNum=drug.num) }}" class="home_content_show">查看</a></td>
+                    {% if drugs %}
+                        {% for drug in drugs %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>{{ drug.num }}</td>
+                                <td>{{ drug.name }}</td>
+                                <td>{{ drug.count }}</td>
+                                <td><a href="{{ url_for('drugDetail',drugNum=drug.num) }}"
+                                       class="home_content_show">查看</a></td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr class="noDataTr">
+                            <td colspan="5" class="noDataTd">当前列表数据为空...</td>
                         </tr>
-                    {% endfor %}
+                    {% endif %}
                 </table>
-                <div class="home_content_bottom">
-                    <div class="home_content_nav">
-                        <nav aria-label="Page navigation">
-                            <ul class="pagination">
-                                <li>
-                                    <a href="#" aria-label="Previous">
-                                        <span aria-hidden="true">&laquo;</span>
-                                    </a>
-                                </li>
-                                <li><a href="#">1</a></li>
-                                <li><a href="#">2</a></li>
-                                <li><a href="#">3</a></li>
-                                <li><a href="#">4</a></li>
-                                <li><a href="#">5</a></li>
-                                <li>
-                                    <a href="#" aria-label="Next">
-                                        <span aria-hidden="true">&raquo;</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
+                {#                <div class="home_content_bottom">#}
+                {#                    <div class="home_content_nav">#}
+                {#                        <nav aria-label="Page navigation">#}
+                {#                            <ul class="pagination">#}
+                {#                                <li>#}
+                {#                                    <a href="#" aria-label="Previous">#}
+                {#                                        <span aria-hidden="true">&laquo;</span>#}
+                {#                                    </a>#}
+                {#                                </li>#}
+                {#                                <li><a href="#">1</a></li>#}
+                {#                                <li><a href="#">2</a></li>#}
+                {#                                <li><a href="#">3</a></li>#}
+                {#                                <li><a href="#">4</a></li>#}
+                {#                                <li><a href="#">5</a></li>#}
+                {#                                <li>#}
+                {#                                    <a href="#" aria-label="Next">#}
+                {#                                        <span aria-hidden="true">&raquo;</span>#}
+                {#                                    </a>#}
+                {#                                </li>#}
+                {#                            </ul>#}
+                {#                        </nav>#}
+                {#                    </div>#}
+                {#                </div>#}
             </div>
         </div>
     </div>

@@ -8,6 +8,7 @@
         function sureDelete() {
             alert('点击')
         }
+
         function checkData() {
             {#药品编号#}
             var num_text = document.getElementById('inputText').value;
@@ -27,7 +28,7 @@
     <div id="MyDiv" class="white_content">
         <div class="MyDiv_top">
             <img class="MyDiv_img" src="{{ url_for('static',filename='image/close.png') }}"
-                onclick="CloseDiv('MyDiv','fade')">
+                 onclick="CloseDiv('MyDiv','fade')">
         </div>
         <div class="MyDiv_content">
             目前来说，我还是喜欢这个自己改造的弹出层。自己在项目中也用的是这个。
@@ -43,7 +44,7 @@
             <h2 class="addDrugType_title">增加药品类别</h2>
             {% if drugTypeTips %}
                 <div class="addDrugType_tips">
-                     <label class="addDrugType_tips_txt">{{ drugTypeTips }}</label>
+                    <label class="addDrugType_tips_txt">{{ drugTypeTips }}</label>
                 </div>
             {% endif %}
             <div class="addDrugType_input_item">
@@ -62,17 +63,23 @@
                     <td class="table_title_txt">库存(个)</td>
                     <td class="table_title_txt">操作</td>
                 </tr>
-                {% for drugType in drugTypes %}
-                    <tr>
-                        <td>{{ loop.index }}</td>
-                        <td>{{ drugType.name }}</td>
-                        <td>{{ drugType.count }}</td>
-                        <td><a id="delete"
-                                {# onclick="ShowDiv('MyDiv','fade')"#}
-                               href="{{ url_for('deleteDrugType',drugTypeId=drugType.id) }}"
-                               class="home_content_show">删除</a></td>
+                {% if drugTypes %}
+                    {% for drugType in drugTypes %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ drugType.name }}</td>
+                            <td>{{ drugType.count }}</td>
+                            <td><a id="delete"
+                                    {# onclick="ShowDiv('MyDiv','fade')"#}
+                                   href="{{ url_for('deleteDrugType',drugTypeId=drugType.id) }}"
+                                   class="home_content_show">删除</a></td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr class="noDataTr">
+                        <td colspan="4" class="noDataTd">当前列表数据为空...</td>
                     </tr>
-                {% endfor %}
+                {% endif %}
             </table>
         </form>
     </div>

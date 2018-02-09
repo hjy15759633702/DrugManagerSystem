@@ -8,30 +8,31 @@
     <link rel="stylesheet" href="{{ url_for('static',filename='css/addStockHome.css') }}">
     <script type="application/javascript">
         function addStockHistory() {
-                location.href = "{{ url_for('addStocHistory') }}";
+            location.href = "{{ url_for('addStocHistory') }}";
         }
+
         function addStock() {
-                location.href = "{{ url_for('addStockHome') }}";
+            location.href = "{{ url_for('addStockHome') }}";
         }
     </script>
 {% endblock %}
 <!--内容-->
 {% block content %}
     <div class="addStock_content">
-        <!--左边-->
-        <div class="addStock_content_left">
-            <div class="addStock_nav_title">
-                <p>进货管理</p>
-            </div>
-            <div class="home_nav_type">
-                <label class="addStockHome_nav_add" onclick="addStock()">添加进货</label>
-                <label class="addStockHome_nav_add_un" onclick="addStockHistory()">进货历史</label>
-            </div>
+    <!--左边-->
+    <div class="addStock_content_left">
+        <div class="addStock_nav_title">
+            <p>进货管理</p>
         </div>
-        <!--右边-->
-        <div class="addStock_content_right">
-            <h2 class="addDrug_title">药品列表</h2>
-            <div class="home_content_table">
+        <div class="home_nav_type">
+            <label class="addStockHome_nav_add" onclick="addStock()">添加进货</label>
+            <label class="addStockHome_nav_add_un" onclick="addStockHistory()">进货历史</label>
+        </div>
+    </div>
+    <!--右边-->
+    <div class="addStock_content_right">
+        <h2 class="addDrug_title">药品列表</h2>
+        <div class="home_content_table">
             <table class="table table-striped table-bordered">
                 <tr class="table_title">
                     <td class="table_title_txt">序号</td>
@@ -40,23 +41,22 @@
                     <td class="table_title_txt">库存(个)</td>
                     <td class="table_title_txt">操作</td>
                 </tr>
-                {% for drug in drugs %}
-                    <tr>
-                        <td>{{ loop.index }}</td>
-                        <td>{{ drug.num }}</td>
-                        <td>{{ drug.name }}</td>
-{#                            <td>{{ drug.stockPrice }}</td>#}
-{#                            <td>{{ drug.stockDate }}</td>#}
-{#                            {% if drug.isSale == True %}#}
-{#                                <td>卖出</td>#}
-{#                            {% else %}#}
-{#                                <td>有货</td>#}
-{#                            {% endif %}#}
-                        <td>{{ drug.count }}</td>
-                       {# href="{{ url_for('drugDetail',drugNum=drug.num) }}"#}
-                        <td><a href="{{ url_for('addStock',drugNum=drug.num) }}" class="home_content_show">进货</a></td>
+                {% if drugs %}
+                    {% for drug in drugs %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ drug.num }}</td>
+                            <td>{{ drug.name }}</td>
+                            <td>{{ drug.count }}</td>
+                            <td><a href="{{ url_for('addStock',drugNum=drug.num) }}" class="home_content_show">进货</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr class="noDataTr">
+                        <td colspan="5" class="noDataTd">当前列表数据为空...</td>
                     </tr>
-                {% endfor %}
+                {% endif %}
             </table>
         </div>
     </div>

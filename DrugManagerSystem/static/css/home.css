@@ -131,3 +131,30 @@
     color: #000000;
     text-decoration: none;
 }
+
+.home_nav_addType_un{
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    display: block;
+    background-color: white;
+    margin-top: 10px;
+    text-align: center;
+    font-weight: bold;
+    color: #337AB7;
+    border-radius: 5px;
+    border: 1px solid #337AB7;
+}
+
+.home_nav_addType{
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    display: block;
+    background-color: #337AB7;
+    margin-top: 10px;
+    text-align: center;
+    font-weight: bold;
+    color: white;
+    border-radius: 5px;
+}

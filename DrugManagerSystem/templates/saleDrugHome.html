@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}添加进货{% endblock %}
+{% block title %}选购药品{% endblock %}
 
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static',filename='css/addStock.css') }}">
@@ -8,10 +8,11 @@
     <link rel="stylesheet" href="{{ url_for('static',filename='css/saleDrugHome.css') }}">
     <script type="application/javascript">
         function showSaleDrug() {
-                location.href = "{{ url_for('showSaleDrug') }}";
+            location.href = "{{ url_for('showSaleDrug') }}";
         }
+
         function saleDrug() {
-                location.href = "{{ url_for('saleDrugHome') }}";
+            location.href = "{{ url_for('saleDrugHome') }}";
         }
     </script>
 {% endblock %}
@@ -33,27 +34,35 @@
             <h2 class="addDrug_title">药品列表</h2>
             <div class="home_content_table">
                 <table class="table table-striped table-bordered">
-                <tr class="table_title">
-                    <td class="table_title_txt">序号</td>
-                    <td class="table_title_txt">药品编号</td>
-                    <td class="table_title_txt">药品名称</td>
-                    <td class="table_title_txt">可选购(个)</td>
-                    <td class="table_title_txt">操作</td>
-                </tr>
-                {% for drug in drugs %}
-                    <tr>
-                        <td>{{ loop.index }}</td>
-                        <td>{{ drug['num'] }}</td>
-                        <td>{{ drug['name'] }}</td>
-                        <td>{{ drug['count'] }}</td>
-                        {% if drug['count'] <= 0 %}
-                            <td><a href ="javascript:return false;" onclick="return false;" class="unSale_btn">购买</a></td>
-                        {% else %}
-                            <td><a href="{{ url_for('saleDrug',drugNum=drug['num']) }}" class="home_content_show">购买</a></td>
-                        {% endif %}
+                    <tr class="table_title">
+                        <td class="table_title_txt">序号</td>
+                        <td class="table_title_txt">药品编号</td>
+                        <td class="table_title_txt">药品名称</td>
+                        <td class="table_title_txt">可选购(个)</td>
+                        <td class="table_title_txt">操作</td>
                     </tr>
-                {% endfor %}
-            </table>
+                    {% if drugs %}
+                        {% for drug in drugs %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>{{ drug['num'] }}</td>
+                                <td>{{ drug['name'] }}</td>
+                                <td>{{ drug['count'] }}</td>
+                                {% if drug['count'] <= 0 %}
+                                    <td><a href="javascript:return false;" onclick="return false;"
+                                           class="unSale_btn">购买</a></td>
+                                {% else %}
+                                    <td><a href="{{ url_for('saleDrug',drugNum=drug['num']) }}"
+                                           class="home_content_show">购买</a></td>
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr class="noDataTr">
+                            <td colspan="5" class="noDataTd">当前列表数据为空...</td>
+                        </tr>
+                    {% endif %}
+                </table>
             </div>
         </div>
     </div>

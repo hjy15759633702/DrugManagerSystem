@@ -85,12 +85,12 @@ body{
 
 .noDataTr{
     width: 100%;
-    height: 50px;
+    height: 40px;
 }
 
 .noDataTd{
-    height: 50px;
-    line-height: 50px;
+    height: 40px;
+    line-height: 40px;
     font-size: 14px;
     color: #999999;
     text-align: center;

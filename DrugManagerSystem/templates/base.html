@@ -19,12 +19,19 @@
     </script>
     <link rel="stylesheet" href="{{ url_for('static',filename='css/base.css') }}">
     <script type="application/javascript">
-{#        $(function(){#}
-{#           $('.navbar-nav li').click(function(e){#}
-{#               e.preventDefault();#}
-{#               $(this).addClass('active').siblings().removeClass('active');#}
-{#           });#}
-{#        });#}
+        {#        $(function(){#}
+        {#           $('.navbar-nav li').click(function(e){#}
+        {#               e.preventDefault();#}
+        {#               $(this).addClass('active').siblings().removeClass('active');#}
+        {#           });#}
+        {#        });#}
+
+        function checkData() {
+            var input = document.getElementById('input').value;
+            if (input == '') return false;
+            return true;
+        }
+
         //弹出隐藏层
         function ShowDiv(show_div, bg_div) {
             document.getElementById(show_div).style.display = 'block';
@@ -59,14 +66,15 @@
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li class="active" ><a href="{{ url_for('home') }}">首页</a></li>
-                    <li ><a href="{{ url_for('addStockHome') }}">进货</a></li>
-                    <li ><a href="{{ url_for('saleDrugHome') }}">购买</a></li>
-                    <li ><a href="{{ url_for('saleManageHome') }}">销售</a></li>
+                    <li class="active"><a href="{{ url_for('home') }}">首页</a></li>
+                    <li><a href="{{ url_for('addStockHome') }}">进货</a></li>
+                    <li><a href="{{ url_for('saleDrugHome') }}">购买</a></li>
+                    <li><a href="{{ url_for('saleManageHome') }}">销售</a></li>
                 </ul>
-                <form class="navbar-form navbar-left" action="{{ url_for('searchDrug') }}" method="post">
+                <form class="navbar-form navbar-left" action="{{ url_for('searchDrug') }}" method="post"
+                      onsubmit="return checkData()">
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="请输入药品关键字" name="keywords">
+                        <input id="input" type="text" class="form-control" placeholder="请输入药品关键字" name="keywords">
                     </div>
                     <button type="submit" class="btn btn-primary">搜索</button>
                 </form>

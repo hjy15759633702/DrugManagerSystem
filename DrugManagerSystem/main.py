@@ -32,8 +32,8 @@ def home():
             drugTypes = DrugType.query.all()
 
             # 获取所有药品 前面一百条数据
-            drugsfromDb = db.session.query(Drug.num, Drug.name, func.count('*').label('count')) \
-                .group_by(Drug.num).order_by(Drug.id).limit(100).offset(0)
+            drugsfromDb = db.session.query(Drug.num, Drug.name, func.count('*').label('count')).filter(Drug.isSale == False) \
+                .group_by(Drug.num).order_by(Drug.id)
 
             # 从数据库查到列表
             for drug in drugsfromDb:
@@ -42,6 +42,28 @@ def home():
             return render_template('home.html', drugTypes=drugTypes, drugs=drugs)
     return redirect(url_for('login'))
 
+# 根据某个列别查询
+@app.route('/drugType/<int:drugTypeId>/')
+def drugType(drugTypeId):
+    # 判断用户是否登录
+    user_id = session.get('user_id')
+    if user_id:
+        user = User.query.filter(User.id == user_id).first()
+        if user:
+            drugs = []
+            # 获取数据列表
+            drugTypes = DrugType.query.all()
+
+            # 获取所有药品
+            drugsfromDb = db.session.query(Drug.num, Drug.name, func.count('*').label('count'))\
+                .filter(db.and_(Drug.drugTypeId == drugTypeId,Drug.isSale == False)).group_by(Drug.num).order_by(Drug.id)
+
+            # 从数据库查到列表
+            for drug in drugsfromDb:
+                drugs.append(drug)
+
+            return render_template('home.html', drugTypes=drugTypes, drugs=drugs, drugTypeId=drugTypeId)
+    return redirect(url_for('login'))
 
 # 登录
 @app.route('/login/', methods=['POST', 'GET'])
@@ -56,8 +78,8 @@ def login():
         if user:
             session['user_id'] = user.id
             # 选中以后31天内不需要登录  cookie保存
-            if checkbox is not None and checkbox == 'remembered':
-                session.permanent = True
+            # if checkbox is not None and checkbox == 'remembered':
+            session.permanent = True
             return redirect(url_for('home'))
         else:
             return u'手机号码或者密码错误，请确认后再登录！'
@@ -100,7 +122,7 @@ def addDrug():
                 return render_template('addDrug.html')
             else:
                 # 当前时间
-                # nowDate = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+                nowDate = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
                 num = request.form.get('num')
                 name = request.form.get('name')
                 type = request.form.get('type')
@@ -118,7 +140,7 @@ def addDrug():
                 if drugType:
                     drugTypeId = drugType.id
                     for index in range(0, count):
-                        drug = Drug(num=num, name=name, desc=desc, stockPrice=price, drugTypeId=drugTypeId)
+                        drug = Drug(num=num, name=name, desc=desc, stockDate=nowDate, stockPrice=price, drugTypeId=drugTypeId)
                         drug.drugType = drugType
                         db.session.add(drug)
                         db.session.flush()  # 主要是这里，写入数据库，但是不提交
@@ -128,7 +150,7 @@ def addDrug():
                     db.session.commit()
                     drugTypeId = drugType.id
                     for index in range(0, count):
-                        drug = Drug(num=num, name=name, desc=desc, stockPrice=price, drugTypeId=drugTypeId)
+                        drug = Drug(num=num, name=name, desc=desc, stockDate=nowDate, stockPrice=price, drugTypeId=drugTypeId)
                         drug.drugType = drugType
                         db.session.add(drug)
                         db.session.flush()  # 主要是这里，写入数据库，但是不提交
@@ -243,7 +265,7 @@ def searchDrug():
                 drugsfromDb = Drug.query.filter(db.or_(Drug.num.like("%" + keywords + "%"),
                                                        Drug.name.like("%" + keywords + "%"),
                                                        Drug.desc.like("%" + keywords + "%"))) \
-                    .group_by(Drug.num).order_by(Drug.id).limit(100).offset(0)
+                    .group_by(Drug.num).order_by(Drug.id)
 
                 # 从数据库查到列表
                 for drug in drugsfromDb:
@@ -304,7 +326,7 @@ def addStockHome():
         if user:
             drugs = []
             # 获取所有药品 前面一百条数据
-            drugsfromDb = db.session.query(Drug.num, Drug.name, func.count('*').label('count')) \
+            drugsfromDb = db.session.query(Drug.num, Drug.name, func.count('*').label('count')).filter(Drug.isSale == False) \
                 .group_by(Drug.num).order_by(Drug.id).all()
 
             # 从数据库查到列表
@@ -364,7 +386,7 @@ def saleDrugHome():
         if user:
             drugs = []
             # 获取所有药品 药品编号进行分组查询  查找每种药品库存多少
-            drugsfromDb = db.session.query(Drug.num, Drug.name, func.count('*').label('count')).group_by(Drug.num).all()
+            drugsfromDb = db.session.query(Drug.num, Drug.name, func.count('*').label('count')).filter(Drug.isSale == False).group_by(Drug.num).all()
             # 对购买表 药品编号进行分组查询  查找每种药品选购多少
             salesfromDb = db.session.query(Sale.drugNum, func.count('*').label('count')) \
                 .filter(Sale.userId == user_id).group_by(Sale.drugNum).all()
@@ -398,7 +420,7 @@ def saleDrug(drugNum):
                 drug = {}
                 # 查找药品编号  卖出价格 数量
                 drugsfromDb = db.session.query(Drug.num, Drug.name, Drug.stockPrice,
-                                               func.count('*').label('count')).filter(Drug.num == drugNum).first()
+                                               func.count('*').label('count')).filter(db.and_(Drug.num == drugNum, Drug.isSale == False)).first()
                 salesfromDb = db.session.query(func.count('*').label('count')).filter(
                     db.and_(Sale.drugNum == drugNum, Sale.userId == user_id)).first()
 

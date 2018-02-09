@@ -8,10 +8,11 @@
     <link rel="stylesheet" href="{{ url_for('static',filename='css/home.css') }}">
     <script type="application/javascript">
         function addStockHistory() {
-                location.href = "{{ url_for('addStocHistory') }}";
+            location.href = "{{ url_for('addStocHistory') }}";
         }
+
         function addStock() {
-                location.href = "{{ url_for('addStockHome') }}";
+            location.href = "{{ url_for('addStockHome') }}";
         }
     </script>
 {% endblock %}
@@ -41,19 +42,25 @@
                         <td class="table_title_txt">进货时间</td>
                         <td class="table_title_txt">操作</td>
                     </tr>
-                    {% for drug in drugs %}
-                        <tr>
-                            <td>{{ loop.index }}</td>
-                            <td>{{ drug.num }}</td>
-                            <td>{{ drug.name }}</td>
-                            <td>{{ drug.count }}</td>
-                            <td>{{ drug.stockDate }}</td>
-                            <td>
-                                <a href="{{ url_for('backStock', drugNum=drug.num, stockDate=drug.stockDate ) }}"
-                                   class="home_content_show">退货</a>
-                            </td>
+                    {% if drugs %}
+                        {% for drug in drugs %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>{{ drug.num }}</td>
+                                <td>{{ drug.name }}</td>
+                                <td>{{ drug.count }}</td>
+                                <td>{{ drug.stockDate }}</td>
+                                <td>
+                                    <a href="{{ url_for('backStock', drugNum=drug.num, stockDate=drug.stockDate ) }}"
+                                       class="home_content_show">退货</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr class="noDataTr">
+                            <td colspan="6" class="noDataTd">当前列表数据为空...</td>
                         </tr>
-                    {% endfor %}
+                    {% endif %}
                 </table>
             </div>
         </div>

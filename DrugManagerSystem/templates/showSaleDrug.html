@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}添加进货{% endblock %}
+{% block title %}查看选购{% endblock %}
 
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static',filename='css/showSaleDrug.css') }}">
@@ -38,24 +38,30 @@
                         <td class="table_title_txt">单价(元)</td>
                         <td class="table_title_txt">数量(个)</td>
                         <td class="table_title_txt">金额(元)</td>
-{#                        <td class="table_title_txt">选购时间</td>#}
+                        {#                        <td class="table_title_txt">选购时间</td>#}
                         <td class="table_title_txt">选购人</td>
                         <td class="table_title_txt">操作</td>
                     </tr>
-                    {% for showSale in showSales %}
-                        <tr>
-                            <td>{{ loop.index }}</td>
-                            <td>{{ showSale['name'] }}</td>
-                            <td>{{ showSale['stockPrice'] }}</td>
-                            <td>{{ showSale['saleCount'] }}</td>
-                            <td>{{ showSale['money'] }}</td>
-{#                            <td>{{ showSale['time'] }}</td>#}
-                            <td>{{ showSale['username'] }}</td>
-                            <td>
-                                <a class="showSaleDrug_content_show" href="{{ url_for('deleteSale',num=showSale['num']) }}">删除</a>
-                            </td>
+                    {% if showSales %}
+                        {% for showSale in showSales %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>{{ showSale['name'] }}</td>
+                                <td>{{ showSale['stockPrice'] }}</td>
+                                <td>{{ showSale['saleCount'] }}</td>
+                                <td>{{ showSale['money'] }}</td>
+                                <td>{{ showSale['username'] }}</td>
+                                <td>
+                                    <a class="showSaleDrug_content_show"
+                                       href="{{ url_for('deleteSale',num=showSale['num']) }}">删除</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr class="noDataTr">
+                            <td colspan="7" class="noDataTd">当前列表数据为空...</td>
                         </tr>
-                    {% endfor %}
+                    {% endif %}
                     {% if showSales %}
                         <tr class="table_title">
                             <td colspan="8" style="width: 100%">
