@@ -17,7 +17,7 @@ manager = Manager(app)
 migrate = Migrate(app,db)
 
 # 添加迁移脚本的命令到manager中
-manager.add_command('db',MigrateCommand)
+manager.add_command('db', MigrateCommand)
 
 if __name__ == '__main__':
     manager.run()
